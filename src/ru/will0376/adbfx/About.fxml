@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="245.0" prefWidth="374.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.ControllerAbout">
+   <children>
+      <ImageView fitHeight="67.0" fitWidth="81.0" layoutX="5.0" layoutY="135.0" smooth="false">
+         <image>
+            <Image url="@github.png" />
+         </image>
+      </ImageView>
+      <TextArea fx:id="textAbout" editable="false" layoutX="106.0" layoutY="23.0" prefHeight="200.0" prefWidth="247.0" wrapText="true" />
+      <Button layoutX="19.0" layoutY="211.0" mnemonicParsing="false" onAction="#openGithub" text="Github" />
+   </children>
+</AnchorPane>
