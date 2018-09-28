@@ -10,9 +10,12 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javafx.application.Platform;
@@ -24,6 +27,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -39,6 +46,8 @@ public class controller implements Initializable {
 	  
 	   @FXML
 	   private TextArea TextField;
+	   @FXML
+	   private TextField textFwifi;
 	  
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
@@ -51,45 +60,81 @@ public class controller implements Initializable {
 	   public void ñlearFl(ActionEvent event) {
 		   TextField.clear();
 	   }
+	   
 	   public void refleshDevices(ActionEvent event) {
 		   startUP();
 	   }
+	   
 	   protected void startUP() {
-		try {
-			JadbConnection jadb = new JadbConnection();
-			List<JadbDevice> devices = jadb.getDevices();
-			if(devices.size() == 0) {
-				System.out.println("No devices found");
-				TextField.appendText("No devices found"+n);
-			}
-			else if(devices.size() == 1) {
+			List<JadbDevice> devices = connectToPhone("0",0,true);
+			if (devices != null) {
 				System.out.println(devices.get(0));
 				TextField.appendText(devices.get(0).toString()+n);
-				
 			}
-		} catch (IOException | JadbException e) {
-			e.printStackTrace();
 		}
+	   public void wifiConnect() throws JadbException {
+		   String ipport = textFwifi.getText();
+		  int port;
+		  String ip;
+		  boolean valid;
+		  boolean ipp;
+		  if(ipport.contains(":")) {
+			  valid = validIpPort(ipport, true);
+			  ipp = true;
+		  }
+		  else {
+			  valid = validIpPort(ipport, false);
+			  ipp = false;
+		  }
+		  if(valid) {
+			  if(ipp) {
+				  String[] isbnParts = ipport.split(":");
+				  ip = isbnParts[0];
+				  port = Integer.parseInt(isbnParts[1]);
+			  }
+			  else {
+				  ip = ipport;
+				  port = 5555;
+			  }
+			  
+			  List<JadbDevice> devices = connectToPhone(ip,port,false);
+			 // if (devices != null) {
+				System.out.println(devices.get(0));
+				TextField.appendText(devices.get(0).toString()+n);
+			  //}
+				
+		  }
+		  else {
+			  System.out.println("It is not ip");
+			  TextField.appendText("It is not ip"+n);
+		  }
+		   
 	   }
+	   
+	   public boolean validIpPort(String ipp,boolean port) {
+		   if(port) {
+		   Pattern pattern = Pattern.compile("[0-9]+.[0-9]+.[0-9]+.[0-9]+:[0-9]+");
+			  Matcher m = pattern.matcher(ipp);
+			  return m.matches();  
+		   }
+		   else {
+			   Pattern pattern = Pattern.compile("[0-9]+.[0-9]+.[0-9]+.[0-9]+");
+				  Matcher m = pattern.matcher(ipp);
+				  return m.matches();  
+		   }
+		  }
 	   public void pullUname() {
 			try {
-				 JadbConnection jadb = new JadbConnection();
-				 List<JadbDevice> devices = jadb.getDevices();
-
-				 if(devices.size() == 0) {
-						System.out.println("No devices found");
-						TextField.appendText("No devices found"+n);
-					}
-				 else {
-					 
-					 JadbDevice device = devices.get(0);
+				 
+				 List<JadbDevice> devices = connectToPhone("0",0,true);
+					 if(devices != null) {
 					 String text = null;
-						try (BufferedReader br = new BufferedReader(new InputStreamReader(device.executeShell("uname", "-a"), "UTF-8"))) {
+						try (BufferedReader br = new BufferedReader(new InputStreamReader(devices.get(0).executeShell("uname", "-a"), "UTF-8"))) {
 							text = br.lines().collect(Collectors.joining(System.lineSeparator()));
 						}
 						System.out.println(text);
 						TextField.appendText(text+n);
-				 }
+					 }
 			} catch (IOException | JadbException e) {
 				e.printStackTrace();
 			}
@@ -127,13 +172,7 @@ public class controller implements Initializable {
 	   }
 	   public void installToPhone(List<File> files) {
 		   try {
-				JadbConnection jadb = new JadbConnection();
-				List<JadbDevice> devices = jadb.getDevices();
-				if(devices.size() == 0) {
-					System.out.println("No devices found(Reconnect phone)");
-					TextField.appendText("No devices found(Reconnect phone)"+n);
-				}
-				else if(devices.size() == 1) {
+			   List<JadbDevice> devices = connectToPhone("0",0,true);
 					for(int i = 0;i< files.size();i++) {
 						String pt = files.get(i).toPath().toString();
 						String end = pt.substring(pt.lastIndexOf("."), pt.length());
@@ -147,9 +186,7 @@ public class controller implements Initializable {
 					new PackageManager(devices.get(0)).install(files.get(i));
 					System.out.println("Success");
 					TextField.appendText("Success");
-						}
-						}
-					
+						}					
 				}
 			} catch (IOException | JadbException e) {
 				StringWriter writer = new StringWriter();
@@ -162,11 +199,50 @@ public class controller implements Initializable {
 			}
 	   }
 	   
+	   public List<JadbDevice> connectToPhone(String ip, int port,boolean localhost) {
+		   if(!localhost) { //not work =\
+			   try {
+					JadbConnection jadb = new JadbConnection(ip,port);
+					System.out.println("Connect to: "+ip);
+					TextField.appendText("Connect to: "+ip+n);
+					List<JadbDevice> devices = jadb.getDevices();
+					if(devices.size() == 0) {
+						System.out.println("No devices found(Reconnect phone)");
+						TextField.appendText("No devices found(Reconnect phone)"+n);
+					}
+					else if(devices.size() >= 1) {
+						System.out.println(devices.get(0)+"");
+						TextField.appendText(devices.get(0)+""+n);
+						return devices;
+					}
+				} catch (IOException | JadbException e) {
+					e.printStackTrace();
+				}
+		   }
+		   else {
+		   try {
+				JadbConnection jadb = new JadbConnection();
+				List<JadbDevice> devices = jadb.getDevices();
+				if(devices.size() == 0) {
+					System.out.println("No devices found(Reconnect phone)");
+					TextField.appendText("No devices found(Reconnect phone)"+n);
+				}
+				else if(devices.size() >= 1) {
+					return devices;
+					
+				}
+			} catch (IOException | JadbException e) {
+				e.printStackTrace();
+			}
+		   }
+		return null;
+	   }
 	   public void openAbout(ActionEvent event) {
 		   try {
-	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("About.fxml"));
+	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/About.fxml"));
 	            Parent root1 = fxmlLoader.load();
 	            Stage stage1 = new Stage();
+	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
 	            stage1.setTitle("About");
 	            stage1.setScene(new Scene(root1, 400, 270));
 	            stage1.setResizable(false);
