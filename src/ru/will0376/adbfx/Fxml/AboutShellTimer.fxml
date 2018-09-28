@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="132.0" prefWidth="214.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <TextArea editable="false" layoutX="-1.0" prefHeight="132.0" prefWidth="214.0" text="Timer - This time after&#10; which the task&#10; will be complete forcibly.&#10;&#10;set 0 to disable =)" />
+   </children>
+</AnchorPane>

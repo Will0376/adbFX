@@ -13,7 +13,7 @@ public class Main extends Application {
 	public static Object ps;
 	public static double x;
 	public static double y;
-	public static String ver = "0.0.9";
+	public static String ver = "0.0.10";
 
 	@Override
 	public void start(Stage primaryStage) {

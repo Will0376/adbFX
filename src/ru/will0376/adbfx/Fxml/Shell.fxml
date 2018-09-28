@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="378.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.ControllerShell">
+   <children>
+      <TextArea fx:id="outShell" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="255.0" prefWidth="505.0" text="!!!The Shell mode is still in beta. possible bugs!!!" />
+      <TextArea fx:id="inputShell" layoutX="14.0" layoutY="305.0" prefHeight="25.0" prefWidth="392.0" />
+      <Button layoutX="416.0" layoutY="305.0" mnemonicParsing="false" onAction="#sendShell" prefHeight="30.0" prefWidth="103.0" text="Send" />
+      <Button layoutX="14.0" layoutY="273.0" mnemonicParsing="false" onAction="#clearLog" prefHeight="25.0" prefWidth="135.0" text="Clear log" textFill="RED" />
+      <Button layoutX="159.0" layoutY="273.0" mnemonicParsing="false" onAction="#saveLog" prefHeight="25.0" prefWidth="135.0" text="Save log" />
+      <Button layoutX="14.0" layoutY="349.0" mnemonicParsing="false" onAction="#clearInput" prefHeight="19.0" prefWidth="80.0" text="Clear input" />
+      <TextField fx:id="timerFd" layoutX="341.0" layoutY="349.0" prefHeight="25.0" prefWidth="65.0" promptText="10" text="10" />
+      <Text layoutX="294.0" layoutY="366.0" onMouseClicked="#aboutTimer" strokeType="OUTSIDE" strokeWidth="0.0" text="_Timer:_" />
+   </children>
+</AnchorPane>
