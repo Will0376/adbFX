@@ -37,6 +37,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -54,7 +55,13 @@ public class Controller implements Initializable {
 	   private TextArea TextField;
 	   @FXML
 	   private TextField textFwifi;
-	   private boolean localhost = false;
+	   
+	   @FXML
+	   private BorderPane v;
+   
+	   
+	   @SuppressWarnings("unused")
+	private boolean localhost = false;
 	   AdbConnection devices = null;
 	  
 		@Override
@@ -62,10 +69,11 @@ public class Controller implements Initializable {
 			TextField.setWrapText(true);
 			TextField.setEditable(false);
 			TextField.clear();
+			TextField.setText("AdbFX Version: "+Main.ver+n);
 			startUP();
 		}
 	 
-	   public void ÒlearFl(ActionEvent event) {
+	   public void —ÅlearFl(ActionEvent event) {
 		   TextField.clear();
 	   }
 	   
@@ -202,8 +210,12 @@ public class Controller implements Initializable {
 		    
 	   }
 	   public void installToPhone(List<File> files) {
-		   try {
-			   List<JadbDevice> devices = connectToPhone();
+			  
+			   Thread install = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					 List<JadbDevice> devices = connectToPhone();
 					for(int i = 0;i< files.size();i++) {
 						String pt = files.get(i).toPath().toString();
 						String end = pt.substring(pt.lastIndexOf("."), pt.length());
@@ -212,22 +224,29 @@ public class Controller implements Initializable {
 							TextField.appendText(files.get(i)+" is not apk"+n);
 						}
 						else {
-						System.out.println("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
 						TextField.appendText("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString()+n);
-					new PackageManager(devices.get(0)).install(files.get(i));
+						System.out.println("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+						
+						
+					try {
+						new PackageManager(devices.get(0)).install(files.get(i));
+					} catch (IOException | JadbException | NullPointerException e) {
+						StringWriter writer = new StringWriter();
+			            PrintWriter printWriter= new PrintWriter(writer);
+			            e.printStackTrace(printWriter);
+						System.out.println("~~~~FAIL!!!~~~~");
+						e.printStackTrace();
+						TextField.appendText("~~~~FAIL!!!~~~~"+n);
+						TextField.appendText(writer.toString());
+					}
 					System.out.println("Success");
-					TextField.appendText("Success");
-						}					
+					TextField.appendText("Success"+n);
+					
 				}
-			} catch (IOException | JadbException e) {
-				StringWriter writer = new StringWriter();
-	            PrintWriter printWriter= new PrintWriter(writer);
-	            e.printStackTrace(printWriter);
-				System.out.println("~~~~FAIL!!!~~~~");
-				e.printStackTrace();
-				TextField.appendText("~~~~FAIL!!!~~~~"+n);
-				TextField.appendText(writer.toString());
-			}
+			  }
+			 }
+			});
+			   install.start();		   
 	   }
 	   
 	   public List<JadbDevice> connectToPhone() {
@@ -274,6 +293,7 @@ public class Controller implements Initializable {
 	   public void openAbout(ActionEvent event) {
 		   try {
 	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/About.fxml"));
+	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
 	            Parent root1 = fxmlLoader.load();
 	            Stage stage1 = new Stage();
 	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
@@ -288,11 +308,12 @@ public class Controller implements Initializable {
 	   public void adbShell(ActionEvent event) {
 		   try {
 	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/Shell.fxml"));
+	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
 	            Parent root1 = fxmlLoader.load();
 	            Stage stage1 = new Stage();
 	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
 	            stage1.setTitle("Shell(Beta!)");
-	            stage1.setScene(new Scene(root1, 535, 378));
+	            stage1.setScene(new Scene(root1, 668, 378));
 	            stage1.setResizable(false);
 	            stage1.show();
 	        } catch (Exception e) {

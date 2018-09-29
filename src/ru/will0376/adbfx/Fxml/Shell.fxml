@@ -6,15 +6,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="378.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.ControllerShell">
+<AnchorPane prefHeight="378.0" prefWidth="668.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.ControllerShell">
    <children>
-      <TextArea fx:id="outShell" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="255.0" prefWidth="505.0" text="!!!The Shell mode is still in beta. possible bugs!!!" />
-      <TextArea fx:id="inputShell" layoutX="14.0" layoutY="305.0" prefHeight="25.0" prefWidth="392.0" />
-      <Button layoutX="416.0" layoutY="305.0" mnemonicParsing="false" onAction="#sendShell" prefHeight="30.0" prefWidth="103.0" text="Send" />
-      <Button layoutX="14.0" layoutY="273.0" mnemonicParsing="false" onAction="#clearLog" prefHeight="25.0" prefWidth="135.0" text="Clear log" textFill="RED" />
-      <Button layoutX="159.0" layoutY="273.0" mnemonicParsing="false" onAction="#saveLog" prefHeight="25.0" prefWidth="135.0" text="Save log" />
-      <Button layoutX="14.0" layoutY="349.0" mnemonicParsing="false" onAction="#clearInput" prefHeight="19.0" prefWidth="80.0" text="Clear input" />
-      <TextField fx:id="timerFd" layoutX="341.0" layoutY="349.0" prefHeight="25.0" prefWidth="65.0" promptText="10" text="10" />
-      <Text layoutX="294.0" layoutY="366.0" onMouseClicked="#aboutTimer" strokeType="OUTSIDE" strokeWidth="0.0" text="_Timer:_" />
+      <TextArea fx:id="outShell" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="255.0" prefWidth="640.0" style="-fx-font-family: Consolas; -fx-background-color: #000000; -fx-highlight-text-fill: #000000; -fx-text-fill: #000000;" text="%key.shell.BetaMode" />
+      <TextArea fx:id="inputShell" layoutX="14.0" layoutY="305.0" prefHeight="25.0" prefWidth="523.0" />
+      <Button layoutX="551.0" layoutY="305.0" mnemonicParsing="false" onAction="#sendShell" prefHeight="37.0" prefWidth="103.0" text="%key.shell.Send" />
+      <Button layoutX="14.0" layoutY="273.0" mnemonicParsing="false" onAction="#clearLog" prefHeight="25.0" prefWidth="135.0" text="%key.shell.ClearLog" textFill="RED" />
+      <Button layoutX="159.0" layoutY="273.0" mnemonicParsing="false" onAction="#saveLog" prefHeight="25.0" prefWidth="135.0" text="%key.shell.SaveLog" />
+      <Button layoutX="14.0" layoutY="349.0" mnemonicParsing="false" onAction="#clearInput" prefHeight="25.0" prefWidth="135.0" text="%key.shell.ClearInput" />
+      <TextField fx:id="timerFd" layoutX="580.0" layoutY="349.0" prefHeight="25.0" prefWidth="65.0" promptText="10" text="0" />
+      <Text layoutX="530.0" layoutY="369.0" onMouseClicked="#aboutTimer" strokeType="OUTSIDE" strokeWidth="0.0" text="_Timer:_" />
+      <Button layoutX="162.0" layoutY="349.0" mnemonicParsing="false" onAction="#disableTimer" prefHeight="25.0" prefWidth="142.0" text="%key.shell.DisableTimer" />
+      <Button layoutX="316.0" layoutY="349.0" mnemonicParsing="false" onAction="#defTimer" text="%key.shell.DefaultTimer" />
+      <Button layoutX="551.0" layoutY="270.0" mnemonicParsing="false" onAction="#doAboutThread" prefHeight="25.0" prefWidth="103.0" text="%key.shell.Abort" textFill="RED">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

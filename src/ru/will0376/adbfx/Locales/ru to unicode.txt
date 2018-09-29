@@ -1,0 +1,31 @@
+key.main.RefleshDevices=Перепроверить устройства
+key.main.InstallApk=Установить Apk(пакетно)
+key.main.Shell=Shell(Бета!)
+key.main.SaveLog=Сохранить лог
+key.main.ClearLog=Очистить лог
+key.main.Log=Лог:
+#
+key.main.bar.file=Файл
+key.main.bar.file.RefleshDevices=Перепроверить устройства
+key.main.bar.file.GetUname=Получить uname
+key.main.bar.file.Exit=Выход
+#
+key.main.bar.edit=Редактировать
+key.main.bar.edit.ClearLog=Очистить лог
+#
+key.main.bar.help=Помощь
+key.main.bar.help.About=Об программе 
+#
+key.shell.BetaMode=!!!Shell в бете, возможны баги!!!\nКликни по "_Timer_" для получения справки
+key.shell.ClearLog=Очистить лог
+key.shell.SaveLog=Сохранить лог
+key.shell.Abort=Прервать
+key.shell.Send=Отправить
+key.shell.ClearInput=Очистить ввод
+key.shell.DisableTimer=Отключить таймер
+key.shell.DefaultTimer=Таймер по умолчанию
+#
+key.AboutShellTimer=Таймер - Это время после которого\n задача будет\n завершена принудительно.\n\nУстанови 0 для отключения =)
+#
+key.About=
+key.About.buttonGithub=Github

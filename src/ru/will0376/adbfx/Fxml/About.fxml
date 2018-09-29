@@ -15,6 +15,6 @@
          </image>
       </ImageView>
       <TextArea fx:id="textAbout" editable="false" layoutX="106.0" layoutY="23.0" prefHeight="200.0" prefWidth="247.0" wrapText="true" />
-      <Button layoutX="19.0" layoutY="211.0" mnemonicParsing="false" onAction="#openGithub" text="Github" />
+      <Button layoutX="19.0" layoutY="211.0" mnemonicParsing="false" onAction="#openGithub" text="%key.About.buttonGithub" />
    </children>
 </AnchorPane>

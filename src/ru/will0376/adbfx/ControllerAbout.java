@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -20,12 +21,15 @@ public class ControllerAbout implements Initializable {
 	   private TextArea textAbout;
 	   @FXML
 	   private Button button;
-	  
+	   
+	   private ResourceBundle resources;
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {	
-			textAbout.appendText("		  ~~~~adbFX~~~~	");
-			textAbout.appendText(System.getProperty("line.separator")+" By will0376 =)");
-			textAbout.appendText(System.getProperty("line.separator")+"Ver: " + Main.ver);
+			this.resources = resources;
+			printText("		  ~~~~AdbFX~~~~	");
+			printText(resources.getString("key.About"));
+			printText("Version: " + Main.ver);
+			printText("By Will0376 =)");
 			textAbout.setWrapText(true);
 		}
 		public void openGithub(ActionEvent event) {
@@ -40,5 +44,8 @@ public class ControllerAbout implements Initializable {
 							  	e1.printStackTrace();
 							}
 		}
+		public void printText(String text) {
+			textAbout.appendText(text + System.getProperty("line.separator"));
+		 }
 		
 }

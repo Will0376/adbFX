@@ -9,27 +9,32 @@
 
 <AnchorPane prefHeight="332.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.Controller">
    <children>
-      <Button layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#refleshDevices" prefHeight="57.0" prefWidth="200.0" text="Reflesh Devices" />
-      <TextArea fx:id="TextField" layoutX="229.0" layoutY="22.0" prefHeight="269.0" prefWidth="482.0" />
-      <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="213.0">
+      <Button layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#refleshDevices" prefHeight="57.0" prefWidth="200.0" text="%key.main.RefleshDevices" />
+      <TextArea fx:id="TextField" layoutX="229.0" layoutY="56.0" prefHeight="235.0" prefWidth="482.0" style="-fx-font-family: Consolas; -fx-background-color: #000000; -fx-highlight-text-fill: #000000; -fx-text-fill: #000000;" />
+      <Button layoutX="612.0" layoutY="301.0" mnemonicParsing="false" onAction="#сlearFl" prefHeight="25.0" prefWidth="107.0" text="%key.main.ClearLog" textFill="RED" />
+      <Button layoutX="489.0" layoutY="301.0" mnemonicParsing="false" onAction="#saveToFile" prefHeight="25.0" prefWidth="107.0" text="%key.main.SaveLog" />
+      <Button layoutX="15.0" layoutY="128.0" mnemonicParsing="false" onAction="#openFiles" prefHeight="57.0" prefWidth="200.0" text="%key.main.InstallApk" />
+      <Text layoutX="229.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%key.main.Log" wrappingWidth="155.13671875" />
+      <Button layoutX="15.0" layoutY="287.0" mnemonicParsing="false" onAction="#adbShell" prefHeight="41.0" prefWidth="200.0" text="%key.main.Shell" />
+      <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="733.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="%key.main.bar.file">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#refleshDevices" text="Refresh devices" />
-                  <MenuItem mnemonicParsing="false" onAction="#pullUname" text="Get Uname" />
-                  <MenuItem mnemonicParsing="false" onAction="#doExit" text="Exit" />
+              <MenuItem mnemonicParsing="false" onAction="#refleshDevices" text="%key.main.bar.file.RefleshDevices" />
+                  <MenuItem mnemonicParsing="false" onAction="#pullUname" text="%key.main.bar.file.GetUname" />
+                  <MenuItem mnemonicParsing="false" onAction="#doExit" text="%key.main.bar.file.Exit" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" />
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="%key.main.bar.edit">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#сlearFl" text="Clear field" />
+              <MenuItem mnemonicParsing="false" onAction="#сlearFl" text="%key.main.bar.edit.ClearLog" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" />
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" text="%key.main.bar.help">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#openAbout" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#openAbout" text="%key.main.bar.help.About" />
             </items>
           </Menu>
         </menus>
@@ -37,11 +42,6 @@
             <Blend mode="HARD_LIGHT" />
          </effect>
       </MenuBar>
-      <Button layoutX="612.0" layoutY="301.0" mnemonicParsing="false" onAction="#сlearFl" prefHeight="25.0" prefWidth="107.0" text="Clear log" textFill="RED" />
-      <Button layoutX="489.0" layoutY="301.0" mnemonicParsing="false" onAction="#saveToFile" prefHeight="25.0" prefWidth="107.0" text="Save log to file" />
-      <Button layoutX="15.0" layoutY="128.0" mnemonicParsing="false" onAction="#openFiles" prefHeight="57.0" prefWidth="200.0" text="Install apk" />
-      <Text layoutX="229.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Log:" wrappingWidth="155.13671875" />
-      <Button layoutX="15.0" layoutY="287.0" mnemonicParsing="false" onAction="#adbShell" prefHeight="41.0" prefWidth="200.0" text="Shell(Beta!)" />
       <!--<Text layoutX="15.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wi-Fi ADB:" wrappingWidth="200.0" />
        <TextField fx:id="textFwifi" layoutX="60.0" layoutY="209.0" prefHeight="25.0" prefWidth="155.0" />
        <Text layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ip:" wrappingWidth="38.13671875" />
