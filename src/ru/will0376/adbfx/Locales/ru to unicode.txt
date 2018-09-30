@@ -16,6 +16,13 @@ key.main.bar.edit.ClearLog=Очистить лог
 key.main.bar.help=Помощь
 key.main.bar.help.About=Об программе 
 #
+key.main.bar.Lang=Язык
+key.main.bar.Lang.Auto=Авто
+key.main.bar.Lang.En=En
+key.main.bar.Lang.Ru=Ru
+#
+
+
 key.shell.BetaMode=!!!Shell в бете, возможны баги!!!\nКликни по "_Timer_" для получения справки
 key.shell.ClearLog=Очистить лог
 key.shell.SaveLog=Сохранить лог
@@ -25,6 +32,8 @@ key.shell.ClearInput=Очистить ввод
 key.shell.DisableTimer=Отключить таймер
 key.shell.DefaultTimer=Таймер по умолчанию
 #
+
+
 key.AboutShellTimer=Таймер - Это время после которого\n задача будет\n завершена принудительно.\n\nУстанови 0 для отключения =)
 #
 key.About=

@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +38,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -59,6 +61,7 @@ public class Controller implements Initializable {
 	   @FXML
 	   private BorderPane v;
    
+	  private Scene stage;
 	   
 	   @SuppressWarnings("unused")
 	private boolean localhost = false;
@@ -66,12 +69,14 @@ public class Controller implements Initializable {
 	  
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
+			
 			TextField.setWrapText(true);
 			TextField.setEditable(false);
 			TextField.clear();
 			TextField.setText("AdbFX Version: "+Main.ver+n);
 			startUP();
 		}
+			
 	 
 	   public void сlearFl(ActionEvent event) {
 		   TextField.clear();
@@ -320,9 +325,37 @@ public class Controller implements Initializable {
 	            e.printStackTrace();
 	        }
 	   }
+	   public void openWifiTest() {
+		   try {
+	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/Wifi_Main.fxml"));
+	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
+	            Parent root1 = fxmlLoader.load();
+	            Stage stage1 = new Stage();
+	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
+	            stage1.setTitle("Wifi Main Test");
+	            stage1.setScene(new Scene(root1, 484, 382));
+	            stage1.setResizable(false);
+	            stage1.show();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	   }
 	   public void doExit(ActionEvent event) {
 	        Platform.exit();
 	        System.exit(0);
+	   }
+
+	   public void changeLangAuto()  throws IOException {
+		   stage = Main.getScene();
+		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", Main.locale)));
+	   }
+	   public void changeLangEn()  throws IOException {
+		   stage = Main.getScene();
+		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("en"))));
+	   }
+	   public void changeLangRu()  throws IOException {
+		   stage = Main.getScene();
+		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
 	   }
 }
 	  
