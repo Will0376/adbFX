@@ -351,10 +351,12 @@ public class Controller implements Initializable {
 	   }
 	   public void changeLangEn()  throws IOException {
 		   stage = Main.getScene();
+		   Main.locale = new Locale("en");
 		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("en"))));
 	   }
 	   public void changeLangRu()  throws IOException {
 		   stage = Main.getScene();
+		   Main.locale = new Locale("ru");
 		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
 	   }
 }
