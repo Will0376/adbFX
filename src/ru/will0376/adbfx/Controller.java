@@ -38,7 +38,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -94,7 +93,7 @@ public class Controller implements Initializable {
 			}
 		}
 	   public void wifiConnect() throws JadbException {
-		   String ipport = textFwifi.getText();
+	/*	   String ipport = textFwifi.getText();
 		  int port;
 		  String ip;
 		  boolean valid;
@@ -134,14 +133,14 @@ public class Controller implements Initializable {
 				System.out.println(devices.get(0));
 				TextField.appendText(devices.get(0).toString()+n);
 			  }
-			 }*/
+			 }
 				
 		  }
 		  else {
 			  System.out.println("It is not ip");
 			  TextField.appendText("It is not ip"+n);
 		  }
-		   
+		   */
 	   }
 	   public void disconnect() {
 		   if(this.devices != null) {
@@ -325,15 +324,15 @@ public class Controller implements Initializable {
 	            e.printStackTrace();
 	        }
 	   }
-	   public void openWifiTest() {
+	   public void openWifiModule(ActionEvent event) {
 		   try {
 	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/Wifi_Main.fxml"));
 	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
 	            Parent root1 = fxmlLoader.load();
 	            Stage stage1 = new Stage();
 	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
-	            stage1.setTitle("Wifi Main Test");
-	            stage1.setScene(new Scene(root1, 484, 382));
+	            stage1.setTitle("Wifi Main(Beta)");
+	            stage1.setScene(new Scene(root1, 670, 420));
 	            stage1.setResizable(false);
 	            stage1.show();
 	        } catch (Exception e) {

@@ -4,6 +4,7 @@ key.main.Shell=Shell(Бета!)
 key.main.SaveLog=Сохранить лог
 key.main.ClearLog=Очистить лог
 key.main.Log=Лог:
+key.main.Wifi=Wifi Adb(Бета)
 #
 key.main.bar.file=Файл
 key.main.bar.file.RefleshDevices=Перепроверить устройства
@@ -38,3 +39,15 @@ key.AboutShellTimer=Таймер - Это время после которого
 #
 key.About=
 key.About.buttonGithub=Github
+#
+
+key.wifi.main.error.6thCommand=Не могу использовать больше 5 элементов. Так что будет выполнено всего 5 =\\
+key.wifi.main.Connect=Подключиться
+key.wifi.main.Reconnect=Переподключиться
+key.wifi.main.Disconnect=Отключиться
+key.wifi.main.Execute=Выполнить команду
+key.wifi.main.InstallApk=Установить Apk(пакетно)
+key.wifi.main.Reflesh=Перепроверить устройства
+key.wifi.main.ClearLog=Очистить лог
+key.wifi.main.Command=Команда:
+key.wifi.main.InstallModule=Для работы этого модуля необходима папка adblibs \n рядом с основным файлом программы

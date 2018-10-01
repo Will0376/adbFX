@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.control.*?>
@@ -9,13 +10,18 @@
 
 <AnchorPane prefHeight="332.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.Controller">
    <children>
+      <ImageView fitHeight="531.0" fitWidth="733.0" layoutY="-199.0" translateY="1.0">
+         <image>
+            <Image url="@../Images/backgrd.png" />
+         </image>
+      </ImageView>
       <Button layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#refleshDevices" prefHeight="57.0" prefWidth="200.0" text="%key.main.RefleshDevices" />
       <TextArea fx:id="TextField" layoutX="229.0" layoutY="56.0" prefHeight="235.0" prefWidth="482.0" style="-fx-font-family: Consolas; -fx-background-color: #000000; -fx-highlight-text-fill: #000000; -fx-text-fill: #000000;" />
       <Button layoutX="612.0" layoutY="301.0" mnemonicParsing="false" onAction="#сlearFl" prefHeight="25.0" prefWidth="107.0" text="%key.main.ClearLog" textFill="RED" />
       <Button layoutX="489.0" layoutY="301.0" mnemonicParsing="false" onAction="#saveToFile" prefHeight="25.0" prefWidth="107.0" text="%key.main.SaveLog" />
-      <Button layoutX="15.0" layoutY="128.0" mnemonicParsing="false" onAction="#openFiles" prefHeight="57.0" prefWidth="200.0" text="%key.main.InstallApk" />
+      <Button layoutX="14.0" layoutY="117.0" mnemonicParsing="false" onAction="#openFiles" prefHeight="57.0" prefWidth="200.0" text="%key.main.InstallApk" />
       <Text layoutX="229.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%key.main.Log" wrappingWidth="155.13671875" />
-      <Button layoutX="15.0" layoutY="287.0" mnemonicParsing="false" onAction="#adbShell" prefHeight="41.0" prefWidth="200.0" text="%key.main.Shell" />
+      <Button layoutX="15.0" layoutY="263.0" mnemonicParsing="false" onAction="#adbShell" prefHeight="57.0" prefWidth="200.0" text="%key.main.Shell" />
       <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="733.0">
         <menus>
           <Menu mnemonicParsing="false" text="%key.main.bar.file">
@@ -50,7 +56,7 @@
             <Blend mode="HARD_LIGHT" />
          </effect>
       </MenuBar>
-      <Button layoutX="229.0" layoutY="295.0" mnemonicParsing="false" onAction="#openWifiTest" prefHeight="25.0" prefWidth="155.0" text="Wifi Test" />
+      <Button layoutX="15.0" layoutY="192.0" mnemonicParsing="false" onAction="#openWifiModule" prefHeight="57.0" prefWidth="200.0" text="%key.main.Wifi" />
       <!--<Text layoutX="15.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wi-Fi ADB:" wrappingWidth="200.0" />
        <TextField fx:id="textFwifi" layoutX="60.0" layoutY="209.0" prefHeight="25.0" prefWidth="155.0" />
        <Text layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ip:" wrappingWidth="38.13671875" />

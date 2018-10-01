@@ -16,9 +16,9 @@ public class Main extends Application {
 	public static Object ps;
 	public static double x;
 	public static double y;
-	public static String ver = "0.1.2.bfix";
+	public static String ver = "0.1.3";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
-	public static boolean uselocale = true;
+	public static boolean debug = true;
 	public static Scene scene;
 	@Override
 	public void start(Stage primaryStage) {
@@ -29,7 +29,7 @@ public class Main extends Application {
             Parent root = fxmlload.load();
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
             primaryStage.setTitle("adbFX");
-            primaryStage.setScene(new Scene(root));
+            primaryStage.setScene(new Scene(root, 733, 332));
             scene = primaryStage.getScene();
             primaryStage.setResizable(false);
             primaryStage.show();
