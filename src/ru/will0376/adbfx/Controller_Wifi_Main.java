@@ -2,6 +2,8 @@ package ru.will0376.adbfx;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -20,11 +23,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 public class Controller_Wifi_Main implements Initializable  {
-		public boolean connected = false;
 	 @FXML
-	   private TextArea output;
+	 private TextArea output;
 	 @FXML
-	   private TextField textip;
+	 private TextField textip;
 	 @FXML
 	 private TextField textcomfl;
 	 	
@@ -32,54 +34,52 @@ public class Controller_Wifi_Main implements Initializable  {
 	 
 	 private File file;
 	 
+	 String adbfile ;
+	 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		try {
+			adbfile = new File(".").getCanonicalPath()+"\\adblibs\\"+"adb.exe";
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		this.resources = resources;
-		printText(resources.getString("key.wifi.main.InstallModule"));
+		printRes("key.wifi.main.InstallModule");
+		output.setWrapText(true);
+		textip.setText(getIpFromFile().replaceAll("null", ""));
 	}
 	public void connect(ActionEvent event) {
+		printRes("key.wifi.main.ConnectTo"," "+textip.getText());
 		execute("connect",  textip.getText());
 }
 	public void disconnect(ActionEvent event) {
+		printRes("key.wifi.main.Disconnected");
 		execute("kill-server");
 	}
 	public void reconnect(ActionEvent event) {
+		printRes("key.wifi.main.RecconectTo"," "+textip.getText());
 		execute("kill-server");
 		execute("connect", textip.getText());
 	}
 	public void execute(String... command) {
 		try {
 			ProcessBuilder pb = null;
-			String file = new File(".").getCanonicalPath()+"\\adblibs\\";
+			
 			 if(command.length == 1 && command[0].equals("devices")) {
-				pb = new ProcessBuilder(file+"adb.exe",command[0]);
+				pb = new ProcessBuilder(adbfile,command[0]);
 				
 			 }
 			
 			if(command.length == 1 && command[0].equals("install") && this.file != null)
-				 pb = new ProcessBuilder(file+"adb.exe", command[0],this.file.getAbsoluteFile().toString());
+				 pb = new ProcessBuilder(adbfile, command[0],this.file.getAbsoluteFile().toString());
 			
 			if(command.length == 1)
-			 pb = new ProcessBuilder(file+"adb.exe", command[0]);
+			 pb = new ProcessBuilder(adbfile, command[0]);
 			
-			else if(command.length == 2)
-			pb = new ProcessBuilder(file+"adb.exe", command[0], command[1]);
-			
-			else if(command.length == 3)
-				pb = new ProcessBuilder(file+"adb.exe", command[0], command[1], command[2]);
-			
-			else if(command.length == 4)
-				pb = new ProcessBuilder(file+"adb.exe", command[0], command[1], command[2], command[3]);
-			
-			else if(command.length == 5)
-				pb = new ProcessBuilder(file+"adb.exe", command[0], command[1], command[2], command[3], command[4]);
-			
-			else if(command.length == 6)
-				pb = new ProcessBuilder(file+"adb.exe", command[0], command[1], command[2], command[3], command[4], command[5]);
-			else {
-				pb = new ProcessBuilder(file+"adb.exe", command[0], command[1], command[2], command[3], command[4], command[5]);
-				printText(resources.getString("key.wifi.main.error.6thCommand"));
-			}
+			else
+			pb = new ProcessBuilder(adbfile, command[0], command[1]);
+
 			pb.redirectErrorStream(true);
 			Process proc = pb.start();
 
@@ -91,17 +91,13 @@ public class Controller_Wifi_Main implements Initializable  {
 			int exit = -1;
 
 			while ((line = br.readLine()) != null) {
-			    // Outputs your process execution
 			    System.out.println(line);
 			    printText(line);
 			    try {
 			        exit = proc.exitValue();
 			        if (exit == 0)  {
-			            // Process finished
 			        }
 			    } catch (IllegalThreadStateException t) {
-			        // The process has not yet finished. 
-			        // Should we stop it?
 			            proc.destroy();
 			    	}
 				}
@@ -109,9 +105,6 @@ public class Controller_Wifi_Main implements Initializable  {
 		catch(IllegalThreadStateException | IOException | NullPointerException t) {
 			t.printStackTrace();
 		}
-	}
-	public void killServer(ActionEvent event) {
-		execute("kill-server");
 	}
 	public void printText(String text) {
 		output.appendText(text + System.getProperty("line.separator"));
@@ -124,6 +117,7 @@ public class Controller_Wifi_Main implements Initializable  {
 	}
 	public void clearLog(ActionEvent event) {
 		output.clear();
+		printRes("key.wifi.main.InstallModule");
 	}
 	 public void openFiles() {
 		    FileChooser fileChooser = new FileChooser();
@@ -162,18 +156,61 @@ public class Controller_Wifi_Main implements Initializable  {
 					printText("~~~~FAIL!!!~~~~");
 					printText(writer.toString());
 				}
-				System.out.println("Success");
-				printText("Success");
 				
 			}
 		  }
 		 }
-
-
 		});
 		   install.start();		   
       }
 		public void exeCommand() {
 			execute("shell",textcomfl.getText());
 		}
+		public void printRes(String... key) {
+			try {
+			if(key.length == 2)
+				printText(resources.getString(key[0]) + key[1]);
+			else
+				printText(resources.getString(key[0]));
+			}
+			catch(MissingResourceException e) {
+				e.printStackTrace();
+				printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
+			}
+		}
+
+		private String getIpFromFile() {
+			File file = new File(adbfile.replaceAll("adb.exe", "")+"config.cfg");
+			if (file.exists()) {
+				try {
+					FileReader fr = new FileReader(file); 
+				      char [] a = new char[200];
+				      fr.read(a);
+				      String ret = null;
+				      for(char c : a) {
+				         ret += c;
+				      }
+				      fr.close();
+				      return ret.replaceAll("Ip:", "");
+				} catch ( IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return "Error read file";
+		}
+		public void saveIpToFile() {
+			File file = new File(adbfile.replaceAll("adb.exe", "")+"config.cfg");
+			try {
+				file.createNewFile();
+				FileWriter fw = new FileWriter(file);
+				fw.write("Ip:"+textip.getText());
+				System.out.println("Saved! " + "Ip:"+textip.getText());
+				fw.flush();
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+			
 }

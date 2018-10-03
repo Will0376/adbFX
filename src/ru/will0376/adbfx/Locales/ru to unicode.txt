@@ -50,4 +50,12 @@ key.wifi.main.InstallApk=Установить Apk(пакетно)
 key.wifi.main.Reflesh=Перепроверить устройства
 key.wifi.main.ClearLog=Очистить лог
 key.wifi.main.Command=Команда:
-key.wifi.main.InstallModule=Для работы этого модуля необходима папка adblibs \n рядом с основным файлом программы
+key.wifi.main.InstallModule=Для работы этого модуля необходима папка adblibs с adb библиотеками рядом с основным файлом программы
+key.wifi.main.ConnectTo=Подключение к:
+key.wifi.main.Disconnected=Отключён!
+key.wifi.main.RecconectTo=Переподключаюсь к: 
+key.wifi.main.saveIp=Сохранить ip
+#
+
+key.pl.main.error.PlsRecconect=Пожалуйста, переподключите телефон
+key.pl.all=Всего:

@@ -57,6 +57,7 @@
          </effect>
       </MenuBar>
       <Button layoutX="15.0" layoutY="192.0" mnemonicParsing="false" onAction="#openWifiModule" prefHeight="57.0" prefWidth="200.0" text="%key.main.Wifi" />
+      <Button disable="true" layoutX="229.0" layoutY="298.0" mnemonicParsing="false" onAction="#openPL" prefHeight="28.0" prefWidth="155.0" text="Program List(disable)" />
       <!--<Text layoutX="15.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wi-Fi ADB:" wrappingWidth="200.0" />
        <TextField fx:id="textFwifi" layoutX="60.0" layoutY="209.0" prefHeight="25.0" prefWidth="155.0" />
        <Text layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ip:" wrappingWidth="38.13671875" />

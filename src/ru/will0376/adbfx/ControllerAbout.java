@@ -26,7 +26,7 @@ public class ControllerAbout implements Initializable {
 		public void initialize(URL location, ResourceBundle resources) {	
 			this.resources = resources;
 			printText("		  ~~~~AdbFX~~~~	");
-			printText(resources.getString("key.About"));
+			printText(this.resources.getString("key.About"));
 			printText("Version: " + Main.ver);
 			printText("By Will0376 =)");
 			textAbout.setWrapText(true);

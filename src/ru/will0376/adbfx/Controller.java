@@ -7,25 +7,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.Socket;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import javax.xml.bind.DatatypeConverter;
-
-import com.tananaev.adblib.AdbBase64;
-import com.tananaev.adblib.AdbConnection;
-import com.tananaev.adblib.AdbCrypto;
-import com.tananaev.adblib.AdbStream;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -48,7 +38,6 @@ import se.vidstige.jadb.JadbException;
 import se.vidstige.jadb.managers.PackageManager;
 
 public class Controller implements Initializable {
-	 public String n = System.getProperty("line.separator");
 	   @FXML
 	   private Button button;
 	  
@@ -59,20 +48,21 @@ public class Controller implements Initializable {
 	   
 	   @FXML
 	   private BorderPane v;
-   
-	  private Scene stage;
+	   
+	   ResourceBundle resources;
+	   
+	   private Scene stage;
 	   
 	   @SuppressWarnings("unused")
 	private boolean localhost = false;
-	   AdbConnection devices = null;
 	  
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
-			
+			this.resources = resources;
 			TextField.setWrapText(true);
 			TextField.setEditable(false);
 			TextField.clear();
-			TextField.setText("AdbFX Version: "+Main.ver+n);
+			printText("AdbFX Version: "+Main.ver);
 			startUP();
 		}
 			
@@ -89,83 +79,10 @@ public class Controller implements Initializable {
 			List<JadbDevice> devices = connectToPhone();
 			if (devices != null) {
 				System.out.println(devices.get(0));
-				TextField.appendText(devices.get(0).toString()+n);
+				printText(devices.get(0).toString());
 			}
 		}
-	   public void wifiConnect() throws JadbException {
-	/*	   String ipport = textFwifi.getText();
-		  int port;
-		  String ip;
-		  boolean valid;
-		  boolean ipp;
-		  if(ipport.contains(":")) {
-			  valid = validIpPort(ipport, true);
-			  ipp = true;
-		  }
-		  else {
-			  valid = validIpPort(ipport, false);
-			  ipp = false;
-		  }
-		  if(valid) {
-			  if(ipp) {
-				  String[] isbnParts = ipport.split(":");
-				  ip = isbnParts[0];
-				  port = Integer.parseInt(isbnParts[1]);
-			  }
-			  else {
-				  ip = ipport;
-				  port = 5555;
-			  }
-				this.devices = connectToPhoneWifi(ip,port);
-				try {
-					this.devices.connect();
-					System.out.println("Connected!");
-					TextField.appendText("Connected!"+n);
-					AdbStream stream = this.devices.open("shell:uname -a");
-					
-					System.out.println(stream.read());
-				} catch (IOException | InterruptedException e) {
-					e.printStackTrace();
-				}
-			  /*else {
-			  List<JadbDevice> devices = connectToPhone();
-			  if (devices != null) {
-				System.out.println(devices.get(0));
-				TextField.appendText(devices.get(0).toString()+n);
-			  }
-			 }
-				
-		  }
-		  else {
-			  System.out.println("It is not ip");
-			  TextField.appendText("It is not ip"+n);
-		  }
-		   */
-	   }
-	   public void disconnect() {
-		   if(this.devices != null) {
-			   try {
-				this.devices.close();
-				System.out.println("Disconnected!");
-				TextField.appendText("Disconnected!"+n);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		   }
-	   }
 	   
-	   public boolean validIpPort(String ipp,boolean port) {
-		   if(port) {
-		   Pattern pattern = Pattern.compile("[0-9]+.[0-9]+.[0-9]+.[0-9]+:[0-9]+");
-			  Matcher m = pattern.matcher(ipp);
-			  return m.matches();  
-		   }
-		   else {
-			   Pattern pattern = Pattern.compile("[0-9]+.[0-9]+.[0-9]+.[0-9]+");
-				  Matcher m = pattern.matcher(ipp);
-				  return m.matches();  
-		   }
-		  }
 	   public void pullUname() {
 			try {
 				 
@@ -176,7 +93,7 @@ public class Controller implements Initializable {
 							text = br.lines().collect(Collectors.joining(System.lineSeparator()));
 						}
 						System.out.println(text);
-						TextField.appendText(text+n);
+						printText(text);
 					 }
 			} catch (IOException | JadbException e) {
 				e.printStackTrace();
@@ -225,10 +142,10 @@ public class Controller implements Initializable {
 						String end = pt.substring(pt.lastIndexOf("."), pt.length());
 						if(!end.equals(".apk")) {
 							System.out.println(files.get(i)+" is not apk");
-							TextField.appendText(files.get(i)+" is not apk"+n);
+							TextField.appendText(files.get(i)+" is not apk");
 						}
 						else {
-						TextField.appendText("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString()+n);
+						printText("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
 						System.out.println("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
 						
 						
@@ -240,11 +157,11 @@ public class Controller implements Initializable {
 			            e.printStackTrace(printWriter);
 						System.out.println("~~~~FAIL!!!~~~~");
 						e.printStackTrace();
-						TextField.appendText("~~~~FAIL!!!~~~~"+n);
-						TextField.appendText(writer.toString());
+						printText("~~~~FAIL!!!~~~~");
+						printText(writer.toString());
 					}
 					System.out.println("Success");
-					TextField.appendText("Success"+n);
+					printText("Success");
 					
 				}
 			  }
@@ -259,7 +176,7 @@ public class Controller implements Initializable {
 				List<JadbDevice> devices = jadb.getDevices();
 				if(devices.size() == 0) {
 					System.out.println("No devices found(Reconnect phone)");
-					TextField.appendText("No devices found(Reconnect phone)"+n);
+					printText("No devices found(Reconnect phone)");
 				}
 				else if(devices.size() >= 1) {
 					return devices;
@@ -270,30 +187,7 @@ public class Controller implements Initializable {
 			}
 		  return null;
 	   }
-	  public AdbConnection connectToPhoneWifi(String ip,int port) {
-		try {
-			Socket socket = new Socket(ip, port);
-			AdbCrypto crypto = AdbCrypto.generateAdbKeyPair(new AdbBase64() {
-			      @Override
-			      public String encodeToString(byte[] data) {
-			          return DatatypeConverter.printBase64Binary(data);
-			      }
-			      
-			  });
-			System.out.println(crypto.getAdbPublicKeyPayload());
-			//AdbCrypto cc = AdbCrypto.generateAdbKeyPair(base64);
-			  AdbConnection connection = AdbConnection.create(socket, crypto);
-			  return connection;
-			  //connection.connect();
-		} catch (IOException | NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return null;
-		
 
-		  
-
-	  }
 	   public void openAbout(ActionEvent event) {
 		   try {
 	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/About.fxml"));
@@ -339,6 +233,21 @@ public class Controller implements Initializable {
 	            e.printStackTrace();
 	        }
 	   }
+	   public void openPL(ActionEvent event) {
+		   try {
+	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/ProgramList.fxml"));
+	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
+	            Parent root1 = fxmlLoader.load();
+	            Stage stage1 = new Stage();
+	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
+	            stage1.setTitle("PL(test)");
+	            stage1.setScene(new Scene(root1, 812, 585));
+	            stage1.setResizable(false);
+	            stage1.show();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	   }
 	   public void doExit(ActionEvent event) {
 	        Platform.exit();
 	        System.exit(0);
@@ -358,5 +267,20 @@ public class Controller implements Initializable {
 		   Main.locale = new Locale("ru");
 		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
 	   }
+		public void printRes(String... key) {
+			try {
+			if(key.length == 2)
+				printText(resources.getString(key[0]) + key[1]);
+			else
+				printText(resources.getString(key[0]));
+			}
+			catch(MissingResourceException e) {
+				e.printStackTrace();
+				printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
+			}
+		}
+		public void printText(String text) {
+			TextField.appendText(text + System.getProperty("line.separator"));
+		 }
 }
 	  
