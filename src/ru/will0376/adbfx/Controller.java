@@ -1,5 +1,6 @@
 package ru.will0376.adbfx;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -8,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.ConnectException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,6 +29,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -50,6 +54,10 @@ public class Controller implements Initializable {
 	   @FXML
 	   private BorderPane v;
 	   
+	   @FXML
+	   Hyperlink HL1;
+	   @FXML
+	   Hyperlink HL2;
 	   ResourceBundle resources;
 	   
 	   private Scene stage;
@@ -63,9 +71,12 @@ public class Controller implements Initializable {
 			TextField.setWrapText(true);
 			TextField.setEditable(false);
 			TextField.clear();
+			if (Main.locale.equals("eu"))
+				HL2.setDisable(true);
 			printText("AdbFX Version: "+Main.ver);
 			printRes("key.main.note.FirstStart");
 			printRes("key.main.note.EnableDebugging");
+			printRes("key.all.Tire");
 			startUP();
 		}
 			
@@ -85,6 +96,27 @@ public class Controller implements Initializable {
 				printText(devices.get(0).toString());
 			}
 		}
+	   public void hl1open() {
+		   if(Main.locale.equals("eu"))
+			   openBrw("https://www.xda-developers.com/install-adb-windows-macos-linux/");
+		   else
+		   openBrw("https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-1");
+	   }
+	   public void hl2open() {
+		   openBrw("https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-2");
+	   }
+	   public void openBrw(String url) {
+			try {
+				URI uri = new URI(url);
+				 Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+				    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+				    	  desktop.browse(uri);
+				    	}
+				}
+				  catch (URISyntaxException | IOException e1) {
+					  	e1.printStackTrace();
+					}
+}
 	   
 	   public void pullUname() {
 			try {
@@ -192,10 +224,6 @@ public class Controller implements Initializable {
 				else if(devices != null && devices.size() >= 1) {
 					return devices;
 					
-				}
-				else {
-					printRes("key.main.error.Null");
-					System.out.println(getRes("key.main.error.Null"));
 				}
 			} catch (IOException | JadbException e) {
 				e.printStackTrace();

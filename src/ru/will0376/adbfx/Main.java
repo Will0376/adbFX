@@ -16,7 +16,7 @@ public class Main extends Application {
 	public static Object ps;
 	public static double x;
 	public static double y;
-	public static String ver = "0.1.5";
+	public static String ver = "0.1.6";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
 	public static boolean debug = true;
 	public static Scene scene;

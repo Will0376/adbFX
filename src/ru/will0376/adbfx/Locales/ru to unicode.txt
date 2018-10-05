@@ -5,6 +5,8 @@ key.main.SaveLog=Сохранить лог
 key.main.ClearLog=Очистить лог
 key.main.Log=Лог:
 key.main.Wifi=Wifi Adb(Бета)
+key.main.HL1=Ссылка 1
+key.main.HL2=Ссылка 2
 #
 key.main.bar.file=Файл
 key.main.bar.file.RefleshDevices=Перепроверить устройства
@@ -28,9 +30,10 @@ key.main.error.Null=Devices = Null
 key.main.error.IsNotApk=Это не Apk
 key.main.error.InstallApk=Установка Apk
 #
-key.main.note.FirstStart=Если вы запускаете эту программу впервые, и не знаете, что такое ADB - читайте этот спойлер: https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-1
-key.main.note.EnableDebugging=Обязательно включите отладку! Как это сделать(Читать "Настраиваем телефон."): https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-2
+key.main.note.FirstStart=Если вы запускаете эту программу впервые, и не знаете, что такое ADB - читайте по "Ссылке 1↑"
+key.main.note.EnableDebugging=Обязательно включите отладку!по "Ссылке 2↗"
 #
+key.all.Tire=〰〰〰〰〰〰〰〰〰〰〰〰
 
 
 key.shell.BetaMode=!!!Shell в бете, возможны баги!!!\nКликни по "_Timer_" для получения справки
