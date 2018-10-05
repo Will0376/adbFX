@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -36,11 +38,13 @@ public class ControllerShell implements Initializable {
 	   @FXML
 	   private TextField timerFd;
 	   private boolean abort = false;
+	   ResourceBundle resources;
 	   
 	 public int timer = 0;
 	 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		this.resources = resources;
 		printText("");
 	}
 	public String text = null;
@@ -68,8 +72,8 @@ public class ControllerShell implements Initializable {
 								printText(text);
 					    	}
 					    	else {
-					    		System.out.println("Devices not found!");
-								printText("Devices not found!");
+					    		System.out.println(getRes("key.main.error.PlsRecconect"));
+								printRes("key.main.error.PlsRecconect");
 					    	}
 					    	
 					    }
@@ -122,26 +126,64 @@ public class ControllerShell implements Initializable {
 		   }
 		
 	
-	 public List<JadbDevice> connectToPhone() {
-		   try {
-				JadbConnection jadb = new JadbConnection();
-				List<JadbDevice> devices = jadb.getDevices();
-				if(devices.size() == 0) {
-					System.out.println("No devices found(Reconnect phone)");
-					printText("No devices found(Reconnect phone)");
+		 public List<JadbDevice> connectToPhone() {
+			   try {
+					JadbConnection jadb = new JadbConnection();
+					List<JadbDevice> devices = null;
+					try {
+					devices = jadb.getDevices();
+					}
+					catch(ConnectException e)
+					{
+						printRes("key.main.error.ConnectionRefused");
+						System.out.println(getRes("key.main.error.ConnectionRefused"));
+					}
+					if(devices != null && devices.size() == 0) {
+						System.out.println(getRes("key.main.error.PlsRecconect"));
+						printRes("key.main.error.PlsRecconect");
+					}
+					else if(devices != null && devices.size() >= 1) {
+						return devices;
+						
+					}
+					else {
+						printRes("key.main.error.Null");
+						System.out.println(getRes("key.main.error.Null"));
+					}
+				} catch (IOException | JadbException e) {
+					e.printStackTrace();
 				}
-				else if(devices.size() >= 1) {
-					return devices;
-					
-				}
-			} catch (IOException | JadbException e) {
-				e.printStackTrace();
+			  return null;
+		   }
+	 
+		public void printRes(String... key) {
+			try {
+			if(key.length == 2)
+				printText(resources.getString(key[0]) + key[1]);
+			else
+				printText(resources.getString(key[0]));
 			}
-		  return null;
-	   }
-	 public void printText(String text) {
-		  outShell.appendText(text + System.getProperty("line.separator"));
-	 }
+			catch(MissingResourceException e) {
+				e.printStackTrace();
+				printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
+			}
+		}
+		public void printText(String text) {
+			outShell.appendText(text + System.getProperty("line.separator"));
+		 }
+		public String getRes(String... key) {
+			try {
+				if(key.length == 2)
+					return(resources.getString(key[0]) + key[1]);
+				else
+					return(resources.getString(key[0]));
+				}
+				catch(MissingResourceException e) {
+					e.printStackTrace();
+					printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
+				}
+			return null;
+		}
 	 
 	 public void doAboutThread() {
 		 abort = true;

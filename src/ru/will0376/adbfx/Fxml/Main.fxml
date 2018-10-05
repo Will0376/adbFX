@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="332.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.Controller">
+<AnchorPane cacheShape="false" centerShape="false" focusTraversable="true" maxHeight="332.0" maxWidth="733.0" minHeight="332.0" minWidth="733.0" prefHeight="332.0" prefWidth="733.0" scaleShape="false" snapToPixel="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.Controller">
    <children>
       <ImageView fitHeight="531.0" fitWidth="733.0" layoutY="-199.0" translateY="1.0">
          <image>
@@ -57,7 +57,7 @@
          </effect>
       </MenuBar>
       <Button layoutX="15.0" layoutY="192.0" mnemonicParsing="false" onAction="#openWifiModule" prefHeight="57.0" prefWidth="200.0" text="%key.main.Wifi" />
-      <Button disable="true" layoutX="229.0" layoutY="298.0" mnemonicParsing="false" onAction="#openPL" prefHeight="28.0" prefWidth="155.0" text="Program List(disable)" />
+      <Button disable="false" layoutX="229.0" layoutY="298.0" mnemonicParsing="false" onAction="#openPL" prefHeight="28.0" prefWidth="155.0" text="Program List(disable)" />
       <!--<Text layoutX="15.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wi-Fi ADB:" wrappingWidth="200.0" />
        <TextField fx:id="textFwifi" layoutX="60.0" layoutY="209.0" prefHeight="25.0" prefWidth="155.0" />
        <Text layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ip:" wrappingWidth="38.13671875" />

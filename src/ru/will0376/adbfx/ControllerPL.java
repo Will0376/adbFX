@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -59,11 +60,11 @@ public class ControllerPL implements Initializable {
 		List<JadbDevice> devices = connectToPhone();
 		if(devices == null) {
 			printText("ERROR! devices = null");
-			printRes("key.pl.main.error.PlsRecconect");
+			printRes("key.main.error.PlsRecconect");
 		}
 		else if(devices.size() == 0) {
 			printText("ERROR! devices = 0");
-			printRes("key.pl.main.error.PlsRecconect");
+			printRes("key.main.error.PlsRecconect");
 		}
 		else {
 			System.out.println(doto);
@@ -84,8 +85,8 @@ public class ControllerPL implements Initializable {
 							
 						}
 						else {
-							System.out.println("Null");
-							printText("Null");
+							printRes("key.main.error.Null");
+							System.out.println(getRes("key.main.error.Null"));
 						}
 				    }
 						catch (IOException | JadbException | NullPointerException e) {
@@ -101,8 +102,8 @@ public class ControllerPL implements Initializable {
 				    	
 				    	}
 				    	else {
-				    		System.out.println("Devices not found!");
-							printText("Devices not found!");
+				    		System.out.println(getRes("key.main.error.PlsRecconect"));
+							printText("key.main.error.PlsRecconect");
 				    	}
 			 }
 			 	});
@@ -121,19 +122,33 @@ public class ControllerPL implements Initializable {
 	 public List<JadbDevice> connectToPhone() {
 		   try {
 				JadbConnection jadb = new JadbConnection();
-				List<JadbDevice> devices = jadb.getDevices();
-				if(devices.size() == 0) {
-					System.out.println("No devices found(Reconnect phone)");
-					printText("No devices found! Reconnect phone Or be connected on wi-fi (in the wi-fi adb tab)");
+				List<JadbDevice> devices = null;
+				try {
+				devices = jadb.getDevices();
 				}
-				else if(devices.size() >= 1) {
+				catch(ConnectException e)
+				{
+					printRes("key.main.error.ConnectionRefused");
+					System.out.println(getRes("key.main.error.ConnectionRefused"));
+				}
+				if(devices != null && devices.size() == 0) {
+					System.out.println(getRes("key.main.error.PlsRecconect"));
+					printText("key.main.error.PlsRecconect");
+				}
+				else if(devices != null && devices.size() >= 1) {
 					return devices;
+					
+				}
+				else {
+					printRes("key.main.error.Null");
+					System.out.println(getRes("key.main.error.Null"));
 				}
 			} catch (IOException | JadbException e) {
 				e.printStackTrace();
 			}
 		  return null;
 	   }
+	 
 	 public void printRes(String... key) {
 			try {
 			if(key.length == 2)
@@ -146,6 +161,21 @@ public class ControllerPL implements Initializable {
 				printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
 			}
 		}
+	 
+	 public String getRes(String... key) {
+			try {
+				if(key.length == 2)
+					return(resources.getString(key[0]) + key[1]);
+				else
+					return(resources.getString(key[0]));
+				}
+				catch(MissingResourceException e) {
+					e.printStackTrace();
+					printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
+				}
+			return null;
+	 	}
+	 
 		public void printText(String text) {
 			outLog.appendText(text + System.getProperty("line.separator"));
 		 }

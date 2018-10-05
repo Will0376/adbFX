@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.ConnectException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,6 +64,8 @@ public class Controller implements Initializable {
 			TextField.setEditable(false);
 			TextField.clear();
 			printText("AdbFX Version: "+Main.ver);
+			printRes("key.main.note.FirstStart");
+			printRes("key.main.note.EnableDebugging");
 			startUP();
 		}
 			
@@ -141,12 +144,12 @@ public class Controller implements Initializable {
 						String pt = files.get(i).toPath().toString();
 						String end = pt.substring(pt.lastIndexOf("."), pt.length());
 						if(!end.equals(".apk")) {
-							System.out.println(files.get(i)+" is not apk");
-							TextField.appendText(files.get(i)+" is not apk");
+							System.out.println(files.get(i)+" "+getRes("key.main.error.IsNotApk"));
+							printText(files.get(i)+" "+ getRes("key.main.error.IsNotApk"));
 						}
 						else {
-						printText("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
-						System.out.println("Install("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+						printText(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+						System.out.println(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
 						
 						
 					try {
@@ -173,14 +176,26 @@ public class Controller implements Initializable {
 	   public List<JadbDevice> connectToPhone() {
 		   try {
 				JadbConnection jadb = new JadbConnection();
-				List<JadbDevice> devices = jadb.getDevices();
-				if(devices.size() == 0) {
-					System.out.println("No devices found(Reconnect phone)");
-					printText("No devices found(Reconnect phone)");
+				List<JadbDevice> devices = null;
+				try {
+				devices = jadb.getDevices();
 				}
-				else if(devices.size() >= 1) {
+				catch(ConnectException e)
+				{
+					printRes("key.main.error.ConnectionRefused");
+					System.out.println(getRes("key.main.error.ConnectionRefused"));
+				}
+				if(devices != null && devices.size() == 0) {
+					System.out.println(getRes("key.main.error.PlsRecconect"));
+					printRes("key.main.error.PlsRecconect");
+				}
+				else if(devices != null && devices.size() >= 1) {
 					return devices;
 					
+				}
+				else {
+					printRes("key.main.error.Null");
+					System.out.println(getRes("key.main.error.Null"));
 				}
 			} catch (IOException | JadbException e) {
 				e.printStackTrace();
@@ -189,59 +204,29 @@ public class Controller implements Initializable {
 	   }
 
 	   public void openAbout(ActionEvent event) {
-		   try {
-	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/About.fxml"));
-	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
-	            Parent root1 = fxmlLoader.load();
-	            Stage stage1 = new Stage();
-	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
-	            stage1.setTitle("About");
-	            stage1.setScene(new Scene(root1, 400, 270));
-	            stage1.setResizable(false);
-	            stage1.show();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+		   openFXML("About","About","400","270");
 	   }
 	   public void adbShell(ActionEvent event) {
-		   try {
-	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/Shell.fxml"));
-	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
-	            Parent root1 = fxmlLoader.load();
-	            Stage stage1 = new Stage();
-	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
-	            stage1.setTitle("Shell(Beta!)");
-	            stage1.setScene(new Scene(root1, 668, 378));
-	            stage1.setResizable(false);
-	            stage1.show();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+		   openFXML("Shell","Shell(Beta!)","668","378");
 	   }
 	   public void openWifiModule(ActionEvent event) {
-		   try {
-	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/Wifi_Main.fxml"));
-	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
-	            Parent root1 = fxmlLoader.load();
-	            Stage stage1 = new Stage();
-	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
-	            stage1.setTitle("Wifi Main(Beta)");
-	            stage1.setScene(new Scene(root1, 670, 420));
-	            stage1.setResizable(false);
-	            stage1.show();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+		   openFXML("Wifi_Main","Wifi Main(Beta)","670","420");
 	   }
 	   public void openPL(ActionEvent event) {
+		   openFXML("ProgramList","ProgramList(TEST)","812","585");
+	   }
+	   public void openFXML(String... text) {
 		   try {
-	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/ProgramList.fxml"));
+	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/"+text[0]+".fxml"));
 	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
 	            Parent root1 = fxmlLoader.load();
 	            Stage stage1 = new Stage();
 	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
-	            stage1.setTitle("PL(test)");
-	            stage1.setScene(new Scene(root1, 812, 585));
+	            if(text.length != 1)
+	            stage1.setTitle(text[1]);
+	            else
+	            stage1.setTitle(text[0]);	
+	            stage1.setScene(new Scene(root1, Integer.parseInt(text[2]), Integer.parseInt(text[3])));
 	            stage1.setResizable(false);
 	            stage1.show();
 	        } catch (Exception e) {
@@ -253,16 +238,16 @@ public class Controller implements Initializable {
 	        System.exit(0);
 	   }
 
-	   public void changeLangAuto()  throws IOException {
+	   public void changeLangAuto() throws IOException {
 		   stage = Main.getScene();
-		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", Main.locale)));
+		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale(Locale.getDefault().getLanguage()))));
 	   }
-	   public void changeLangEn()  throws IOException {
+	   public void changeLangEn() throws IOException {
 		   stage = Main.getScene();
 		   Main.locale = new Locale("en");
 		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("en"))));
 	   }
-	   public void changeLangRu()  throws IOException {
+	   public void changeLangRu() throws IOException {
 		   stage = Main.getScene();
 		   Main.locale = new Locale("ru");
 		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
@@ -282,5 +267,18 @@ public class Controller implements Initializable {
 		public void printText(String text) {
 			TextField.appendText(text + System.getProperty("line.separator"));
 		 }
+		public String getRes(String... key) {
+			try {
+				if(key.length == 2)
+					return(resources.getString(key[0]) + key[1]);
+				else
+					return(resources.getString(key[0]));
+				}
+				catch(MissingResourceException e) {
+					e.printStackTrace();
+					printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
+				}
+			return null;
+		}
 }
 	  

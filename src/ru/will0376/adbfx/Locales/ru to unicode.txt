@@ -22,6 +22,15 @@ key.main.bar.Lang.Auto=Авто
 key.main.bar.Lang.En=En
 key.main.bar.Lang.Ru=Ru
 #
+key.main.error.PlsRecconect=Пожалуйста, переподключите телефон
+key.main.error.ConnectionRefused=Не удалось подключиться
+key.main.error.Null=Devices = Null
+key.main.error.IsNotApk=Это не Apk
+key.main.error.InstallApk=Установка Apk
+#
+key.main.note.FirstStart=Если вы запускаете эту программу впервые, и не знаете, что такое ADB - читайте этот спойлер: https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-1
+key.main.note.EnableDebugging=Обязательно включите отладку! Как это сделать(Читать "Настраиваем телефон."): https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-2
+#
 
 
 key.shell.BetaMode=!!!Shell в бете, возможны баги!!!\nКликни по "_Timer_" для получения справки
@@ -57,5 +66,4 @@ key.wifi.main.RecconectTo=Переподключаюсь к:
 key.wifi.main.saveIp=Сохранить ip
 #
 
-key.pl.main.error.PlsRecconect=Пожалуйста, переподключите телефон
 key.pl.all=Всего:
