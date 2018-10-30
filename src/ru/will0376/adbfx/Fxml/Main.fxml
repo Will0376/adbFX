@@ -31,33 +31,31 @@
                   <MenuItem mnemonicParsing="false" onAction="#doExit" text="%key.main.bar.file.Exit" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" />
           <Menu mnemonicParsing="false" text="%key.main.bar.edit">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#сlearFl" text="%key.main.bar.edit.ClearLog" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" />
           <Menu mnemonicParsing="false" text="%key.main.bar.help">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#openAbout" text="%key.main.bar.help.About" />
+                  <Menu mnemonicParsing="false" text="%key.main.bar.help.Lang">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#changeLangAuto" text="%key.main.bar.help.Lang.Auto" />
+                        <MenuItem mnemonicParsing="false" onAction="#changeLangEn" text="%key.main.bar.help.Lang.En" />
+                        <MenuItem mnemonicParsing="false" onAction="#changeLangRu" text="%key.main.bar.help.Lang.Ru" />
+                     </items>
+                  </Menu>
+              <MenuItem mnemonicParsing="false" onAction="#openFAQ" text="%key.main.bar.help.FAQ" />
+                  <MenuItem mnemonicParsing="false" onAction="#openAbout" text="%key.main.bar.help.About" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" />
-            <Menu mnemonicParsing="false" text="%key.main.bar.Lang">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#changeLangAuto" text="%key.main.bar.Lang.Auto" />
-                  <MenuItem mnemonicParsing="false" onAction="#changeLangEn" text="%key.main.bar.Lang.En" />
-                  <MenuItem mnemonicParsing="false" onAction="#changeLangRu" text="%key.main.bar.Lang.Ru" />
-               </items>
-            </Menu>
         </menus>
          <effect>
             <Blend mode="HARD_LIGHT" />
          </effect>
       </MenuBar>
       <Button layoutX="15.0" layoutY="192.0" mnemonicParsing="false" onAction="#openWifiModule" prefHeight="57.0" prefWidth="200.0" text="%key.main.Wifi" />
-      <Button disable="false" layoutX="229.0" layoutY="298.0" mnemonicParsing="false" onAction="#openPL" prefHeight="28.0" prefWidth="155.0" text="Program List(disable)" />
+      <Button disable="true" layoutX="229.0" layoutY="298.0" mnemonicParsing="false" onAction="#openPL" opacity="0.0" prefHeight="28.0" prefWidth="155.0" text="Program List(disable)" />
       <Hyperlink fx:id="HL1" layoutX="337.0" layoutY="29.0" onAction="#hl1open" text="%key.main.HL1" />
       <Hyperlink fx:id="HL2" layoutX="612.0" layoutY="29.0" onAction="#hl2open" text="%key.main.HL2" />
       <!--<Text layoutX="15.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wi-Fi ADB:" wrappingWidth="200.0" />

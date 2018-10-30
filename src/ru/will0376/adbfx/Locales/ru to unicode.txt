@@ -5,8 +5,8 @@ key.main.SaveLog=Сохранить лог
 key.main.ClearLog=Очистить лог
 key.main.Log=Лог:
 key.main.Wifi=Wifi Adb(Бета)
-key.main.HL1=Ссылка 1
-key.main.HL2=Ссылка 2
+key.main.HL1=
+key.main.HL2=
 #
 key.main.bar.file=Файл
 key.main.bar.file.RefleshDevices=Перепроверить устройства
@@ -18,11 +18,11 @@ key.main.bar.edit.ClearLog=Очистить лог
 #
 key.main.bar.help=Помощь
 key.main.bar.help.About=Об программе 
-#
-key.main.bar.Lang=Язык
-key.main.bar.Lang.Auto=Авто
-key.main.bar.Lang.En=En
-key.main.bar.Lang.Ru=Ru
+key.main.bar.help.Lang=Язык
+key.main.bar.help.Lang.Auto=Авто
+key.main.bar.help.Lang.En=En
+key.main.bar.help.Lang.Ru=Ru
+key.main.bar.help.FAQ=FAQ
 #
 key.main.error.PlsRecconect=Пожалуйста, переподключите телефон
 key.main.error.ConnectionRefused=Не удалось подключиться
@@ -30,8 +30,8 @@ key.main.error.Null=Devices = Null
 key.main.error.IsNotApk=Это не Apk
 key.main.error.InstallApk=Установка Apk
 #
-key.main.note.FirstStart=Если вы запускаете эту программу впервые, и не знаете, что такое ADB - читайте по "Ссылке 1↑"
-key.main.note.EnableDebugging=Обязательно включите отладку!по "Ссылке 2↗"
+key.main.note.FirstStart=Если вы запускаете эту программу впервые - прочитайте FAQ!(Помощь->FAQ)"
+key.main.note.EnableDebugging=Обязательно включите отладку!"
 #
 key.all.Tire=〰〰〰〰〰〰〰〰〰〰〰〰
 
@@ -68,5 +68,11 @@ key.wifi.main.Disconnected=Отключён!
 key.wifi.main.RecconectTo=Переподключаюсь к: 
 key.wifi.main.saveIp=Сохранить ip
 #
-
 key.pl.all=Всего:
+#
+key.faq.RU=RU
+key.faq.EN=EN
+key.faq=Язык
+key.faq.lcopy=Локальная копия!
+
+

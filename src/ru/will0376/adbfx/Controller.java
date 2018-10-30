@@ -232,7 +232,7 @@ public class Controller implements Initializable {
 	   }
 
 	   public void openAbout(ActionEvent event) {
-		   openFXML("About","About","400","270");
+		   openFXML("About","null","400","270");
 	   }
 	   public void adbShell(ActionEvent event) {
 		   openFXML("Shell","Shell(Beta!)","668","378");
@@ -243,6 +243,9 @@ public class Controller implements Initializable {
 	   public void openPL(ActionEvent event) {
 		   openFXML("ProgramList","ProgramList(TEST)","812","585");
 	   }
+	   public void openFAQ(ActionEvent event) {
+		   openFXML("FAQ","FAQ","618","335");
+	   }
 	   public void openFXML(String... text) {
 		   try {
 	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/"+text[0]+".fxml"));
@@ -251,8 +254,9 @@ public class Controller implements Initializable {
 	            Stage stage1 = new Stage();
 	            stage1.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
 	            if(text.length != 1)
-	            stage1.setTitle(text[1]);
-	            else
+	            	if(!text[1].equals("null"))
+	            		stage1.setTitle(text[1]);
+	            	else
 	            stage1.setTitle(text[0]);	
 	            stage1.setScene(new Scene(root1, Integer.parseInt(text[2]), Integer.parseInt(text[3])));
 	            stage1.setResizable(false);

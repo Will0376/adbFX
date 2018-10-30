@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="335.0" prefWidth="618.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.ControllerFAQ">
+   <children>
+      <TextArea fx:id="flFAQ" layoutX="13.0" layoutY="40.0" prefHeight="285.0" prefWidth="593.0" />
+      <MenuButton layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="%key.faq">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#changeLangRU" text="%key.faq.RU" />
+          <MenuItem mnemonicParsing="false" onAction="#changeLangEN" text="%key.faq.EN" />
+        </items>
+      </MenuButton>
+      <Button fx:id="reloadJs" layoutX="528.0" layoutY="14.0" mnemonicParsing="false" onAction="#reloadJSON" text="ReloadJson" />
+   </children>
+</AnchorPane>
