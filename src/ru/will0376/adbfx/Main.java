@@ -14,34 +14,33 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	public static Object ps;
-	public static double x;
-	public static double y;
-	public static String ver = "0.1.7";
+	public static String ver = "0.1.8";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
 	public static boolean debug = false; //includes the local copy of the FAQ
 	public static Scene scene;
 	
 	@Override
 	public void start(Stage primaryStage) {
+		String name = "adbFX";
+		if(debug) {
+			ver += ".debug";
+			name += " Debug";
+		}
 		try {
 			FXMLLoader fxmlload = new FXMLLoader();
 			fxmlload.setLocation(getClass().getResource("Fxml/Main.fxml"));
 			fxmlload.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", locale));
             Parent root = fxmlload.load();
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
-            primaryStage.setTitle("adbFX");
+            primaryStage.setTitle(name);
             primaryStage.setScene(new Scene(root, 733, 332));
-           
-            scene = primaryStage.getScene();
-           
+           	 scene = primaryStage.getScene();
             primaryStage.setResizable(false);
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
         }
 		 ps = primaryStage;
-		 x = primaryStage.getX();
-		 y = primaryStage.getY();
 	}
 	
 	public static void main(String[] args) {

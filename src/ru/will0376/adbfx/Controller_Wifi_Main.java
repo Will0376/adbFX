@@ -1,14 +1,6 @@
 package ru.will0376.adbfx;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -31,25 +23,20 @@ public class Controller_Wifi_Main implements Initializable  {
 	 private TextField textcomfl;
 	 	
 	 ResourceBundle resources;
-	 
+
 	 private File file;
 	 
 	 String adbfile ;
-	 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			adbfile = new File(".").getCanonicalPath()+"\\adblibs\\"+"adb.exe";
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		new DownloaderGH().init(output);
+		adbfile = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb.exe").toString();
 		this.resources = resources;
-		printRes("key.wifi.main.InstallModule");
 		output.setWrapText(true);
 		textip.setText(getIpFromFile().replaceAll("null", ""));
 	}
 	public void connect(ActionEvent event) {
+		System.out.println("file: "+adbfile);
 		printRes("key.wifi.main.ConnectTo"," "+textip.getText());
 		execute("connect",  textip.getText());
 }
@@ -62,15 +49,18 @@ public class Controller_Wifi_Main implements Initializable  {
 		execute("kill-server");
 		execute("connect", textip.getText());
 	}
+	public void onLoadLibs(){
+
+	}
 	public void execute(String... command) {
 		try {
 			ProcessBuilder pb = null;
 			
 			 if(command.length == 1 && command[0].equals("devices")) {
 				pb = new ProcessBuilder(adbfile,command[0]);
-				
+
 			 }
-			
+
 			if(command.length == 1 && command[0].equals("install") && this.file != null)
 				 pb = new ProcessBuilder(adbfile, command[0],this.file.getAbsoluteFile().toString());
 			
@@ -110,6 +100,7 @@ public class Controller_Wifi_Main implements Initializable  {
 	public void printText(String text) {
 		output.appendText(text + System.getProperty("line.separator"));
 	 }
+
 	public String getRes(String... key) {
 		try {
 			if(key.length == 2)

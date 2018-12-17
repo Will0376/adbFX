@@ -67,6 +67,7 @@ key.wifi.main.ConnectTo=Подключение к:
 key.wifi.main.Disconnected=Отключён!
 key.wifi.main.RecconectTo=Переподключаюсь к: 
 key.wifi.main.saveIp=Сохранить ip
+key.wifi.main.downloadlibs=Скачать либы
 #
 key.pl.all=Всего:
 #

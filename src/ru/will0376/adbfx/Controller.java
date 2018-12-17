@@ -35,6 +35,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import se.vidstige.jadb.JadbConnection;
@@ -74,9 +75,10 @@ public class Controller implements Initializable {
 			if (Main.locale.equals("eu"))
 				HL2.setDisable(true);
 			printText("AdbFX Version: "+Main.ver);
-			printRes("key.main.note.FirstStart");
-			printRes("key.main.note.EnableDebugging");
-			printRes("key.all.Tire");
+			printRes(false,"key.main.note.FirstStart");
+			printRes(false,"key.main.note.EnableDebugging");
+			printRes(false,"key.main.note.WifiLibs");
+			printRes(false,"key.all.Tire");
 			startUP();
 		}
 			
@@ -88,7 +90,7 @@ public class Controller implements Initializable {
 	   public void refleshDevices(ActionEvent event) {
 		   startUP();
 	   }
-	   
+
 	   protected void startUP() {
 			List<JadbDevice> devices = connectToPhone();
 			if (devices != null) {
@@ -97,14 +99,9 @@ public class Controller implements Initializable {
 			}
 		}
 	   public void hl1open() {
-		   if(Main.locale.equals("eu"))
-			   openBrw("https://www.xda-developers.com/install-adb-windows-macos-linux/");
-		   else
-		   openBrw("https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-1");
-	   }
-	   public void hl2open() {
-		   openBrw("https://4pda.ru/forum/index.php?act=findpost&pid=15982669&anchor=Spoil-15982669-2");
-	   }
+			openBrw("https://www.xda-developers.com/install-adb-windows-macos-linux/");
+		}
+	   public void hl2open() {}
 	   public void openBrw(String url) {
 			try {
 				URI uri = new URI(url);
@@ -176,12 +173,12 @@ public class Controller implements Initializable {
 						String pt = files.get(i).toPath().toString();
 						String end = pt.substring(pt.lastIndexOf("."), pt.length());
 						if(!end.equals(".apk")) {
-							System.out.println(files.get(i)+" "+getRes("key.main.error.IsNotApk"));
-							printText(files.get(i)+" "+ getRes("key.main.error.IsNotApk"));
+							System.out.println(files.get(i)+" "+printRes(true,"key.main.error.IsNotApk"));
+							printText(files.get(i)+" "+ printRes(true,"key.main.error.IsNotApk"));
 						}
 						else {
-						printText(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
-						System.out.println(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+						printText(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+						System.out.println(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
 						
 						
 					try {
@@ -211,15 +208,16 @@ public class Controller implements Initializable {
 				List<JadbDevice> devices = null;
 				try {
 				devices = jadb.getDevices();
+				jadb.getHostVersion();
 				}
 				catch(ConnectException e)
 				{
-					printRes("key.main.error.ConnectionRefused");
-					System.out.println(getRes("key.main.error.ConnectionRefused"));
+					printRes(false,"key.main.error.ConnectionRefused");
+					System.out.println(printRes(true,"key.main.error.ConnectionRefused"));
 				}
 				if(devices != null && devices.size() == 0) {
-					System.out.println(getRes("key.main.error.PlsRecconect"));
-					printRes("key.main.error.PlsRecconect");
+					System.out.println(printRes(true,"key.main.error.PlsRecconect"));
+					printRes(false,"key.main.error.PlsRecconect");
 				}
 				else if(devices != null && devices.size() >= 1) {
 					return devices;
@@ -259,6 +257,10 @@ public class Controller implements Initializable {
 	            	else
 	            stage1.setTitle(text[0]);	
 	            stage1.setScene(new Scene(root1, Integer.parseInt(text[2]), Integer.parseInt(text[3])));
+			   stage1.initModality(Modality.WINDOW_MODAL);
+
+			   // Specifies the owner Window (parent) for new window
+			   stage1.initOwner((Window)Main.ps);
 	            stage1.setResizable(false);
 	            stage1.show();
 	        } catch (Exception e) {
@@ -284,33 +286,28 @@ public class Controller implements Initializable {
 		   Main.locale = new Locale("ru");
 		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
 	   }
-		public void printRes(String... key) {
+		public String printRes(boolean ret,String... key) {
+
 			try {
-			if(key.length == 2)
-				printText(resources.getString(key[0]) + key[1]);
-			else
-				printText(resources.getString(key[0]));
+				if (key.length == 2) {
+				if(ret) return(resources.getString(key[0]) + key[1]);
+				else
+					printText(resources.getString(key[0]) + key[1]);
+				}
+				else {
+					if(ret) return(resources.getString(key[0]));
+					else
+					printText(resources.getString(key[0]));
+				}
 			}
 			catch(MissingResourceException e) {
 				e.printStackTrace();
 				printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
 			}
+			return null;
 		}
 		public void printText(String text) {
 			TextField.appendText(text + System.getProperty("line.separator"));
 		 }
-		public String getRes(String... key) {
-			try {
-				if(key.length == 2)
-					return(resources.getString(key[0]) + key[1]);
-				else
-					return(resources.getString(key[0]));
-				}
-				catch(MissingResourceException e) {
-					e.printStackTrace();
-					printText("Error! Key: "+ key[0] +" not found! Locale:" + resources.getLocale() );
-				}
-			return null;
-		}
 }
 	  

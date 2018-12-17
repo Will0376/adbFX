@@ -136,7 +136,7 @@ public class ControllerFAQ implements Initializable {
 		   is.close();
 		}
 	}
-	public static JSONObject reanJsonFromFile(String file) throws IOException, JSONException {
+		public static JSONObject reanJsonFromFile(String file) throws IOException, JSONException {
 		@SuppressWarnings("static-access")
 		InputStream inputStream = ClassLoader.getSystemClassLoader().getSystemResourceAsStream(file);
 		try {
