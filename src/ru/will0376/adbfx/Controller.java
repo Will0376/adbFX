@@ -12,6 +12,7 @@ import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,12 +29,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -45,35 +43,17 @@ import se.vidstige.jadb.managers.PackageManager;
 
 public class Controller implements Initializable {
 	   @FXML
-	   private Button button;
-	  
-	   @FXML
 	   private TextArea TextField;
 	   @FXML
-	   private TextField textFwifi;
-	   
-	   @FXML
-	   private BorderPane v;
-	   
-	   @FXML
 	   Hyperlink HL1;
-	   @FXML
-	   Hyperlink HL2;
 	   ResourceBundle resources;
-	   
 	   private Scene stage;
-	   
-	   @SuppressWarnings("unused")
-	private boolean localhost = false;
-	  
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			this.resources = resources;
 			TextField.setWrapText(true);
 			TextField.setEditable(false);
 			TextField.clear();
-			if (Main.locale.equals("eu"))
-				HL2.setDisable(true);
 			printText("AdbFX Version: "+Main.ver);
 			printRes(false,"key.main.note.FirstStart");
 			printRes(false,"key.main.note.EnableDebugging");
@@ -81,8 +61,7 @@ public class Controller implements Initializable {
 			printRes(false,"key.all.Tire");
 			startUP();
 		}
-			
-	 
+
 	   public void сlearFl(ActionEvent event) {
 		   TextField.clear();
 	   }
@@ -101,7 +80,6 @@ public class Controller implements Initializable {
 	   public void hl1open() {
 			openBrw("https://www.xda-developers.com/install-adb-windows-macos-linux/");
 		}
-	   public void hl2open() {}
 	   public void openBrw(String url) {
 			try {
 				URI uri = new URI(url);
@@ -121,7 +99,7 @@ public class Controller implements Initializable {
 				 List<JadbDevice> devices = connectToPhone();
 					 if(devices != null) {
 					 String text = null;
-						try (BufferedReader br = new BufferedReader(new InputStreamReader(devices.get(0).executeShell("uname", "-a"), "UTF-8"))) {
+						try (BufferedReader br = new BufferedReader(new InputStreamReader(devices.get(0).executeShell("uname", "-a"), StandardCharsets.UTF_8))) {
 							text = br.lines().collect(Collectors.joining(System.lineSeparator()));
 						}
 						System.out.println(text);
@@ -163,40 +141,32 @@ public class Controller implements Initializable {
 		    
 	   }
 	   public void installToPhone(List<File> files) {
-			  
-			   Thread install = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					 List<JadbDevice> devices = connectToPhone();
-					for(int i = 0;i< files.size();i++) {
-						String pt = files.get(i).toPath().toString();
-						String end = pt.substring(pt.lastIndexOf("."), pt.length());
-						if(!end.equals(".apk")) {
-							System.out.println(files.get(i)+" "+printRes(true,"key.main.error.IsNotApk"));
-							printText(files.get(i)+" "+ printRes(true,"key.main.error.IsNotApk"));
-						}
-						else {
-						printText(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
-						System.out.println(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
-						
-						
-					try {
-						new PackageManager(devices.get(0)).install(files.get(i));
-					} catch (IOException | JadbException | NullPointerException e) {
-						StringWriter writer = new StringWriter();
-			            PrintWriter printWriter= new PrintWriter(writer);
-			            e.printStackTrace(printWriter);
-						System.out.println("~~~~FAIL!!!~~~~");
-						e.printStackTrace();
-						printText("~~~~FAIL!!!~~~~");
-						printText(writer.toString());
-					}
-					System.out.println("Success");
-					printText("Success");
-					
-				}
-			  }
+			   Thread install = new Thread(() -> {
+					List<JadbDevice> devices = connectToPhone();
+				   for(int i = 0;i< files.size();i++) {
+					   String pt = files.get(i).toPath().toString();
+					   String end = pt.substring(pt.lastIndexOf("."));
+					   if(!end.equals(".apk")) {
+						   System.out.println(files.get(i)+" "+printRes(true,"key.main.error.IsNotApk"));
+						   printText(files.get(i)+" "+ printRes(true,"key.main.error.IsNotApk"));
+					   }
+					   else {
+					   printText(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+					   System.out.println(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+				   try {
+					   new PackageManager(devices.get(0)).install(files.get(i));
+				   } catch (IOException | JadbException | NullPointerException e) {
+					   StringWriter writer = new StringWriter();
+					   PrintWriter printWriter= new PrintWriter(writer);
+					   e.printStackTrace(printWriter);
+					   System.out.println("~~~~FAIL!!!~~~~");
+					   e.printStackTrace();
+					   printText("~~~~FAIL!!!~~~~");
+					   printText(writer.toString());
+				   }
+				   System.out.println("Success");
+				   printText("Success");
+			   }
 			 }
 			});
 			   install.start();		   

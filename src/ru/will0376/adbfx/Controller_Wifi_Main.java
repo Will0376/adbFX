@@ -23,9 +23,7 @@ public class Controller_Wifi_Main implements Initializable  {
 	 private TextField textcomfl;
 	 	
 	 ResourceBundle resources;
-
 	 private File file;
-	 
 	 String adbfile ;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -48,9 +46,6 @@ public class Controller_Wifi_Main implements Initializable  {
 		printRes("key.wifi.main.RecconectTo"," "+textip.getText());
 		execute("kill-server");
 		execute("connect", textip.getText());
-	}
-	public void onLoadLibs(){
-
 	}
 	public void execute(String... command) {
 		try {
@@ -133,38 +128,30 @@ public class Controller_Wifi_Main implements Initializable  {
              }          
 	 }
 	   public void installToPhone(List<File> files) {
-			  
-		   Thread install = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				for(int i = 0;i< files.size();i++) {
-					String pt = files.get(i).toPath().toString();
-					String end = pt.substring(pt.lastIndexOf("."), pt.length());
-					if(!end.equals(".apk")) {
-						System.out.println(files.get(i)+" "+getRes("key.main.error.IsNotApk"));
-						printText(files.get(i)+" "+ getRes("key.main.error.IsNotApk"));
-					}
-					else {
-					printText(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
-					System.out.println(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
-					
-					
-				try {
-					for(int ii = 0; ii < files.size();ii++)
-					execute("install",files.get(ii).getAbsoluteFile().toString());
-				} catch (NullPointerException e) {
-					StringWriter writer = new StringWriter();
-		            PrintWriter printWriter= new PrintWriter(writer);
-		            e.printStackTrace(printWriter);
-					System.out.println("~~~~FAIL!!!~~~~");
-					e.printStackTrace();
-					printText("~~~~FAIL!!!~~~~");
-					printText(writer.toString());
-				}
-				
-			}
-		  }
+		   Thread install = new Thread(() -> {
+			   for(int i = 0;i< files.size();i++) {
+				   String pt = files.get(i).toPath().toString();
+				   String end = pt.substring(pt.lastIndexOf("."));
+				   if(!end.equals(".apk")) {
+					   System.out.println(files.get(i)+" "+getRes("key.main.error.IsNotApk"));
+					   printText(files.get(i)+" "+ getRes("key.main.error.IsNotApk"));
+				   }
+				   else {
+				   printText(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+				   System.out.println(getRes("key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+			   try {
+				   for(int ii = 0; ii < files.size();ii++)
+				   execute("install",files.get(ii).getAbsoluteFile().toString());
+			   } catch (NullPointerException e) {
+				   StringWriter writer = new StringWriter();
+				   PrintWriter printWriter= new PrintWriter(writer);
+				   e.printStackTrace(printWriter);
+				   System.out.println("[Wi-Fi]~~~~FAIL!!!~~~~");
+				   e.printStackTrace();
+				   printText("[Wi-Fi]~~~~FAIL!!!~~~~");
+				   printText(writer.toString());
+			   }
+		   }
 		 }
 		});
 		   install.start();		   

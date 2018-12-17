@@ -21,6 +21,5 @@
       <Text fx:id="textcom" layoutX="351.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%key.wifi.main.Command" />
       <Button layoutX="264.0" layoutY="394.0" mnemonicParsing="false" onAction="#clearLog" text="%key.wifi.main.ClearLog" />
       <Button layoutX="135.0" layoutY="394.0" mnemonicParsing="false" onAction="#saveIpToFile" prefHeight="25.0" prefWidth="101.0" text="%key.wifi.main.saveIp" />
-      <Button layoutX="502.0" layoutY="394.0" mnemonicParsing="false" onAction="#onLoadLibs" prefHeight="25.0" prefWidth="111.0" text="%key.wifi.main.downloadlibs" />
    </children>
 </AnchorPane>

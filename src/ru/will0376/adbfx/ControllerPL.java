@@ -93,9 +93,9 @@ public class ControllerPL implements Initializable {
 							StringWriter writer = new StringWriter();
 				            PrintWriter printWriter= new PrintWriter(writer);
 				            e.printStackTrace(printWriter);
-							System.out.println("~~~~FAIL!!!~~~~");
+							System.out.println("[PL]~~~~FAIL!!!~~~~");
 							e.printStackTrace();
-							printText("~~~~FAIL!!!~~~~");
+							printText("[PL]~~~~FAIL!!!~~~~");
 							printText(writer.toString());
 						}
 				    	

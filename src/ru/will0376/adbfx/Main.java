@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	public static Object ps;
-	public static String ver = "0.1.8";
+	public static String ver = "0.1.8A";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
 	public static boolean debug = false; //includes the local copy of the FAQ
 	public static Scene scene;
