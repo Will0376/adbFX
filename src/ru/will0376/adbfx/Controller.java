@@ -33,7 +33,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import se.vidstige.jadb.JadbConnection;
@@ -55,10 +54,10 @@ public class Controller implements Initializable {
 			TextField.setEditable(false);
 			TextField.clear();
 			printText("AdbFX Version: "+Main.ver);
-			printRes(false,"key.main.note.FirstStart");
-			printRes(false,"key.main.note.EnableDebugging");
-			printRes(false,"key.main.note.WifiLibs");
-			printRes(false,"key.all.Tire");
+			printRes(resources,false,"key.main.note.FirstStart");
+			printRes(resources,false,"key.main.note.EnableDebugging");
+			printRes(resources,false,"key.main.note.WifiLibs");
+			printRes(resources,false,"key.all.Tire");
 			startUP();
 		}
 
@@ -147,12 +146,12 @@ public class Controller implements Initializable {
 					   String pt = files.get(i).toPath().toString();
 					   String end = pt.substring(pt.lastIndexOf("."));
 					   if(!end.equals(".apk")) {
-						   System.out.println(files.get(i)+" "+printRes(true,"key.main.error.IsNotApk"));
-						   printText(files.get(i)+" "+ printRes(true,"key.main.error.IsNotApk"));
+						   System.out.println(files.get(i)+" "+printRes(resources,true,"key.main.error.IsNotApk"));
+						   printText(files.get(i)+" "+ printRes(resources,true,"key.main.error.IsNotApk"));
 					   }
 					   else {
-					   printText(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
-					   System.out.println(printRes(true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+					   printText(printRes(resources,true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
+					   System.out.println(printRes(resources,true,"key.main.error.InstallApk")+"("+(i + 1)+"/"+files.size()+"): " + files.get(i).toString());
 				   try {
 					   new PackageManager(devices.get(0)).install(files.get(i));
 				   } catch (IOException | JadbException | NullPointerException e) {
@@ -182,12 +181,12 @@ public class Controller implements Initializable {
 				}
 				catch(ConnectException e)
 				{
-					printRes(false,"key.main.error.ConnectionRefused");
-					System.out.println(printRes(true,"key.main.error.ConnectionRefused"));
+					printRes(resources,false,"key.main.error.ConnectionRefused");
+					System.out.println(printRes(resources,true,"key.main.error.ConnectionRefused"));
 				}
 				if(devices != null && devices.size() == 0) {
-					System.out.println(printRes(true,"key.main.error.PlsRecconect"));
-					printRes(false,"key.main.error.PlsRecconect");
+					System.out.println(printRes(resources,true,"key.main.error.PlsRecconect"));
+					printRes(resources,false,"key.main.error.PlsRecconect");
 				}
 				else if(devices != null && devices.size() >= 1) {
 					return devices;
@@ -227,10 +226,7 @@ public class Controller implements Initializable {
 	            	else
 	            stage1.setTitle(text[0]);	
 	            stage1.setScene(new Scene(root1, Integer.parseInt(text[2]), Integer.parseInt(text[3])));
-			   stage1.initModality(Modality.WINDOW_MODAL);
-
-			   // Specifies the owner Window (parent) for new window
-			   stage1.initOwner((Window)Main.ps);
+	            stage1.initOwner((Window)Main.ps);
 	            stage1.setResizable(false);
 	            stage1.show();
 	        } catch (Exception e) {
@@ -256,7 +252,7 @@ public class Controller implements Initializable {
 		   Main.locale = new Locale("ru");
 		   stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
 	   }
-		public String printRes(boolean ret,String... key) {
+		public String printRes(ResourceBundle resources,boolean ret,String... key) {
 
 			try {
 				if (key.length == 2) {

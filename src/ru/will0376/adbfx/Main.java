@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	public static Object ps;
-	public static String ver = "0.1.8A";
+	public static String ver = "0.1.8B";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
 	public static boolean debug = false; //includes the local copy of the FAQ
 	public static Scene scene;
@@ -33,7 +33,7 @@ public class Main extends Application {
             Parent root = fxmlload.load();
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
             primaryStage.setTitle(name);
-            primaryStage.setScene(new Scene(root, 733, 332));
+            primaryStage.setScene(new Scene(root, 710, 320));
            	 scene = primaryStage.getScene();
             primaryStage.setResizable(false);
             primaryStage.show();
