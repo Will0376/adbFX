@@ -14,7 +14,7 @@ public class Controller_Wifi_Main implements Initializable  {
 	 private TextField textip;
 
 	ResourceBundle resources;
-	String adbfile = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb.exe").toString();
+	String adbfile = Main.c.pathtoadb.toString();
 
 	@Override
 	public void initialize(URL loc, ResourceBundle resources) {
@@ -40,7 +40,7 @@ public class Controller_Wifi_Main implements Initializable  {
 		Main.c.startProgram(command);
 	}
 		private String getIpFromFile() {
-			File file = new File(adbfile.replaceAll("adb.exe", "")+"config.cfg");
+			File file = getpath();
 			if (file.exists()) {
 				try {
 					FileReader fr = new FileReader(file); 
@@ -59,7 +59,7 @@ public class Controller_Wifi_Main implements Initializable  {
 			return "Error read file";
 		}
 		public void saveIpToFile() {
-			File file = new File(adbfile.replaceAll("adb.exe", "")+"config.cfg");
+			File file = getpath();
 			try {
 				file.createNewFile();
 				FileWriter fw = new FileWriter(file);
@@ -71,6 +71,12 @@ public class Controller_Wifi_Main implements Initializable  {
 				e.printStackTrace();
 			}
 			
+		}
+		private File getpath(){
+			if(Main.c.isWindows())
+				return new File(adbfile.replaceAll("adb.exe", "")+"config.cfg");
+			else
+				return new File(adbfile.replaceAll("adb", "")+"config.cfg");
 		}
 			
 }

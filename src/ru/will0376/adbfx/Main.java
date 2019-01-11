@@ -14,12 +14,12 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	public static Object ps;
-	public static String ver = "1.9";
+	public static String ver = "2.0";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
 	public static boolean debug = false; //includes the local copy of the FAQ
 	public static Scene scene;
 	public static Controller c;
-	public static Process pr;
+	public static Thread threadstartprogram;
 	
 	@Override
 	public void start(Stage primaryStage) {

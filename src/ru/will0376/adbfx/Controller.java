@@ -33,8 +33,11 @@ public class Controller implements Initializable {
 	   Hyperlink HL1;
 	   ResourceBundle resources;
 	   private Scene stage;
+	   private String[] phrases = new String[]{"devices [-l]","Failed to install"};
+	   public File pathtoadb = null;
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
+			getPathtoadb();
 			new DownloaderGH().init(TextField);
 			this.resources = resources;
 			TextField.setWrapText(true);
@@ -48,12 +51,7 @@ public class Controller implements Initializable {
 		}
 
 	/**
-	 * todo:
-	 * перейти на использование adb.exe заместо библиотек - Done
-	 * Переписать Wi-Fi адб и шелл под adb.exe;
-	 *
-	 * wi-fi - done
-	 * shell - 1/2 done.(проблемма с ping типом)
+	 * todo: for todo :)
 	 */
 
 	   public void сlearFl(ActionEvent event) {
@@ -98,10 +96,15 @@ public class Controller implements Initializable {
 		    
 	   }
 	   public void installToPhone(List<File> files) {
-			   Thread install = new Thread(() -> {
-				for(int i = 0; i < files.size();i++)
-				startProgram("install",files.get(i).getAbsolutePath());
-			});
+	   	Thread install = new Thread(() -> {
+			  for (int i = 0;i < files.size();i++) {
+					System.out.println("Install: " + files.get(i).getName());
+					printText("Install: " + files.get(i).getName());
+					startProgram("install", files.get(i).getAbsolutePath());
+					while(Main.threadstartprogram.isAlive()){}
+			}
+		 });
+			   install.setName("Install To Phone TH");
 			   install.start();		   
 	   }
 
@@ -184,19 +187,10 @@ public class Controller implements Initializable {
 		public void printText(String text) {
 			TextField.appendText(text + System.getProperty("line.separator"));
 		 }
-		 /**
-		  * @return 0 - O; 1 - error arg!2 - error adb not found!
-		  * */
 
 		 public int startProgram(String... arg){
-			 System.out.println();
-		 	String testtext1 = "devices [-l]";
-		 	String testtext2 = "help";
-		 	String testtext3 = "version";
-
 			 Thread start = new Thread(() -> {
 			 	try {
-				 File pathtoadb = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb.exe");
 				 List<String> list = new ArrayList<String>();
 				 list.add(pathtoadb.getAbsolutePath());
 				 for (int i = 0;i<arg.length;i++)
@@ -208,27 +202,62 @@ public class Controller implements Initializable {
 				 ProcessBuilder procBuilder = new ProcessBuilder(list);
 				 procBuilder.redirectErrorStream(true);
 				 Process process = procBuilder.start();
-				 InputStream stdout = process.getInputStream();
-				 InputStreamReader isrStdout = new InputStreamReader(stdout);
-				 BufferedReader brStdout = new BufferedReader(isrStdout);
-				 String line = brStdout.lines().collect(Collectors.joining("\n"));
-				 Main.pr = process;
-				 if(line.contains(testtext1) && line.contains(testtext2) && line.contains(testtext3)){
-				 printRes(false,"main.error.adb.command");
-				 }
-				 else{
-				 	printText(line);
-					 System.out.println(line);
-				 }
 
+					InputStream processStdOutput = process.getInputStream();
+					Reader r = new InputStreamReader(processStdOutput);
+					BufferedReader br = new BufferedReader(r);
+					String line;
+					while ((line = br.readLine()) != null) {
+						System.out.println(line);
+						if (textTester(line)) {
+							printText(getTextFromPhrase(line));
+						} else {
+							printText(line);
+						}
+					}
 				 process.waitFor();
 			 }
 			 catch (IOException | InterruptedException e){
 				 e.printStackTrace();
 			 }
 			 });
+			 start.setName("StartProgramTH");
 			 start.start();
-	   		return 0;
+	   		Main.threadstartprogram = start;
+			 return 0;
 		 }
+
+	private String getTextFromPhrase(String line) {
+			if (line.contains(phrases[0])) {
+				printRes(true, "main.error.adb.command");
+			}
+			else if (line.contains(phrases[1])) {
+				printText("Fail! Error:"+line.split("Failure")[1]);
+			}
+			return "";
+		 }
+
+	private boolean textTester(String line) {
+
+		for (int i = 0; i < phrases.length; i++) {
+			if (line.contains(phrases[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isWindows(){
+		String os = System.getProperty("os.name").toLowerCase();
+		return (os.contains("win"));
+	}
+
+	public void getPathtoadb() {
+		if(isWindows())
+			 pathtoadb = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb.exe");
+		else
+			pathtoadb = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb");
+
+	}
 }
 	  

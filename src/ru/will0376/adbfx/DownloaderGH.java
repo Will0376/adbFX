@@ -20,6 +20,8 @@ public class DownloaderGH {
             download("https://github.com/Will0376/adbFX/raw/master/adblibs/AdbWinApi.dll","AdbWinApi.dll");
         if(!existsTempDirectory("AdbWinUsbApi.dll"))
             download("https://github.com/Will0376/adbFX/raw/master/adblibs/AdbWinUsbApi.dll","AdbWinUsbApi.dll");
+        if(!existsTempDirectory("adb"))
+            download("https://github.com/Will0376/adbFX/raw/master/adblibs/adb","adb");
     }
     private static boolean isRedirected( Map<String, List<String>> header ) {
             for(String hv : header.get( null )) {
