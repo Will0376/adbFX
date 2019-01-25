@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import ru.will0376.adbfx.Locales.Vars;
 
 public class ControllerShell implements Initializable {
 
@@ -18,17 +19,17 @@ public class ControllerShell implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.resources = resources;
-		Main.c.printText("Shell module started!");
+		Vars.c.printText("Shell module started!");
 	}
 
 		public void sendShell(ActionEvent event) {
-		Main.c.printText("'"+inputShell.getText()+"':");
-			Main.c.startProgram("shell", inputShell.getText());
+		Vars.c.printText("'"+inputShell.getText()+"':");
+			Vars.c.startProgram("shell", inputShell.getText());
 		 }
 
 		 public void doAboutThread(){
-		Main.threadstartprogram.stop();
-		Main.c.printText("Aborted!");
+			 Vars.threadstartprogram.stop();
+			 Vars.c.printText("Aborted!");
 		 }
 		 public void clearInput(){
 		inputShell.clear();

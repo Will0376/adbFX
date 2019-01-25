@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="596.0" prefWidth="587.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.will0376.adbfx.ControllerBackup">
+   <children>
+      <ListView fx:id="listapp" layoutX="14.0" layoutY="14.0" prefHeight="260.0" prefWidth="389.0" />
+      <ListView fx:id="listbackup" layoutX="14.0" layoutY="427.0" prefHeight="155.0" prefWidth="389.0" />
+      <Button layoutX="404.0" layoutY="497.0" mnemonicParsing="false" onAction="#remove" prefHeight="85.0" prefWidth="181.0" text="%backup.remove" />
+      <TextField fx:id="inputname" layoutX="14.0" layoutY="334.0" prefHeight="25.0" prefWidth="349.0" />
+      <Button layoutX="98.0" layoutY="359.0" mnemonicParsing="false" onAction="#save" prefHeight="54.0" prefWidth="181.0" text="%backup.save" />
+      <Button layoutX="404.0" layoutY="406.0" mnemonicParsing="false" onAction="#restore" prefHeight="85.0" prefWidth="181.0" text="%backup.restore" />
+      <CheckBox fx:id="apk" layoutX="19.0" layoutY="274.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="89.0" text="-apk" />
+      <CheckBox fx:id="obb" layoutX="19.0" layoutY="305.0" mnemonicParsing="false" text="-obb" />
+      <CheckBox fx:id="shared" layoutX="178.0" layoutY="274.0" mnemonicParsing="false" text="-shared" />
+      <CheckBox fx:id="nosystem" layoutX="178.0" layoutY="305.0" mnemonicParsing="false" text="-nosystem" />
+      <CheckBox fx:id="all" layoutX="314.0" layoutY="290.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="89.0" text="-all" />
+      <CheckBox fx:id="alertbool" layoutX="416.0" layoutY="14.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="151.0" text="disable allert" />
+      <Button layoutX="403.0" layoutY="47.0" mnemonicParsing="false" onAction="#reloadapp" prefHeight="54.0" prefWidth="181.0" text="%backup.reloadapp" />
+      <Button layoutX="403.0" layoutY="117.0" mnemonicParsing="false" onAction="#reloadbackup" prefHeight="54.0" prefWidth="181.0" text="%backup.reloadbackuplist" />
+      <Button layoutX="404.0" layoutY="317.0" mnemonicParsing="false" onAction="#openFolder" prefHeight="85.0" prefWidth="181.0" text="%backup.openfolder" />
+   </children>
+</AnchorPane>

@@ -25,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import ru.will0376.adbfx.Locales.Vars;
 
 public class Controller implements Initializable {
 	   @FXML
@@ -101,7 +102,7 @@ public class Controller implements Initializable {
 					System.out.println("Install: " + files.get(i).getName());
 					printText("Install: " + files.get(i).getName());
 					startProgram("install", files.get(i).getAbsolutePath());
-					while(Main.threadstartprogram.isAlive()){}
+					while(Vars.threadstartprogram.isAlive()){}
 			}
 		 });
 			   install.setName("Install To Phone TH");
@@ -123,9 +124,13 @@ public class Controller implements Initializable {
 	   public void openFAQ(ActionEvent event) {
 		   openFXML("FAQ","FAQ","618","335");
 	   }
+	   public void openBackup(){
+	   	openFXML("Backup","Backup","588","595");
+	   }
 	   public void openFXML(String... text) {
 		   try {
-		   	Main.c = this;
+		  // 	Main.c = this;
+		   	Vars.c = this;
 	            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/"+text[0]+".fxml"));
 	            fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
 	            Parent root1 = fxmlLoader.load();
@@ -187,8 +192,9 @@ public class Controller implements Initializable {
 		public void printText(String text) {
 			TextField.appendText(text + System.getProperty("line.separator"));
 		 }
-
-		 public int startProgram(String... arg){
+	public String oldlog = "";
+		 public int startProgram(boolean printlog,String... arg){
+		 	oldlog = "";
 			 Thread start = new Thread(() -> {
 			 	try {
 				 List<String> list = new ArrayList<String>();
@@ -208,11 +214,15 @@ public class Controller implements Initializable {
 					BufferedReader br = new BufferedReader(r);
 					String line;
 					while ((line = br.readLine()) != null) {
-						System.out.println(line);
-						if (textTester(line)) {
-							printText(getTextFromPhrase(line));
-						} else {
-							printText(line);
+
+						oldlog += line+" ";
+						if(printlog) {
+							System.out.println(line);
+							if (textTester(line)) {
+								printText(getTextFromPhrase(line));
+							} else {
+								printText(line);
+							}
 						}
 					}
 				 process.waitFor();
@@ -223,9 +233,12 @@ public class Controller implements Initializable {
 			 });
 			 start.setName("StartProgramTH");
 			 start.start();
-	   		Main.threadstartprogram = start;
+	   		Vars.threadstartprogram = start;
 			 return 0;
 		 }
+	public void startProgram(String... arg){
+	   	startProgram(true,arg);
+	}
 
 	private String getTextFromPhrase(String line) {
 			if (line.contains(phrases[0])) {
@@ -258,6 +271,27 @@ public class Controller implements Initializable {
 		else
 			pathtoadb = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb");
 
+	}
+	public String getPath(){
+	   	if(isWindows()){
+	   		return pathtoadb.getAbsolutePath().substring(0,pathtoadb.toString().length() - 7);
+	   		}
+		else
+			return pathtoadb.getAbsolutePath().substring(0,pathtoadb.toString().length() - 3);
+
+	}
+	public void openFolder(File file){
+
+		Desktop desktop = null;
+
+		if (Desktop.isDesktopSupported()) {
+			desktop = Desktop.getDesktop();
+		}
+		try {
+			desktop.open(file);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 }
 	  

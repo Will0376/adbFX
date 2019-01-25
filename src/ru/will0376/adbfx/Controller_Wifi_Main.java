@@ -8,36 +8,37 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import ru.will0376.adbfx.Locales.Vars;
 
 public class Controller_Wifi_Main implements Initializable  {
 	 @FXML
 	 private TextField textip;
 
 	ResourceBundle resources;
-	String adbfile = Main.c.pathtoadb.toString();
+	String adbfile = Vars.c.pathtoadb.toString();
 
 	@Override
 	public void initialize(URL loc, ResourceBundle resources) {
 		this.resources = resources;
 		textip.setText(getIpFromFile().replaceAll("null", ""));
-		Main.c.printText("Wi-Fi module started!");
+		Vars.c.printText("Wi-Fi module started!");
 	}
 	public void connect(ActionEvent event) {
 		System.out.println("file: "+adbfile);
-		Main.c.printRes(false,"key.wifi.main.ConnectTo"," "+textip.getText());
+		Vars.c.printRes(false,"key.wifi.main.ConnectTo"," "+textip.getText());
 		execute("connect",  textip.getText());
 }
 	public void disconnect(ActionEvent event) {
-		Main.c.printRes(false,"key.wifi.main.Disconnected");
+		Vars.c.printRes(false,"key.wifi.main.Disconnected");
 		execute("kill-server");
 	}
 	public void reconnect(ActionEvent event) {
-		Main.c.printRes(false,"key.wifi.main.RecconectTo"," "+textip.getText());
+		Vars.c.printRes(false,"key.wifi.main.RecconectTo"," "+textip.getText());
 		execute("kill-server");
 		execute("connect", textip.getText());
 	}
 	public void execute(String... command) {
-		Main.c.startProgram(command);
+		Vars.c.startProgram(command);
 	}
 		private String getIpFromFile() {
 			File file = getpath();
@@ -73,7 +74,7 @@ public class Controller_Wifi_Main implements Initializable  {
 			
 		}
 		private File getpath(){
-			if(Main.c.isWindows())
+			if(Vars.c.isWindows())
 				return new File(adbfile.replaceAll("adb.exe", "")+"config.cfg");
 			else
 				return new File(adbfile.replaceAll("adb", "")+"config.cfg");

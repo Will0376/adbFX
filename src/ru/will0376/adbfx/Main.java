@@ -5,21 +5,22 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import ru.will0376.adbfx.Locales.Vars;
 
 
 public class Main extends Application {
 	public static Object ps;
-	public static String ver = "2.0";
+	public static String ver = "2.1";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
 	public static boolean debug = false; //includes the local copy of the FAQ
 	public static Scene scene;
-	public static Controller c;
-	public static Thread threadstartprogram;
+	Vars v = new Vars();
 	
 	@Override
 	public void start(Stage primaryStage) {
