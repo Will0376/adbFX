@@ -14,12 +14,12 @@ public class ControllerShell implements Initializable {
 
 	   @FXML
 	   private TextArea inputShell;
-	   ResourceBundle resources;
-
+	   private ResourceBundle resources;
+	private String ver = "1.0";
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.resources = resources;
-		Vars.c.printText("Shell module started!");
+		Vars.c.printText("Shell module started! Version: "+ver);
 	}
 
 		public void sendShell(ActionEvent event) {

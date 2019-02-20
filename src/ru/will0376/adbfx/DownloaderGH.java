@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class DownloaderGH {
     TextArea log;
-    public void init(TextArea log){
+    void init(TextArea log){
         this.log = log;
         if(!existsTempDirectory("folder"))
             createTempDirectory();
@@ -30,7 +30,7 @@ public class DownloaderGH {
             }
             return false;
         }
-        public void download(String... args)
+        private void download(String... args)
         {try {
             String link = args[0];
             String fileName = args[1];
@@ -59,13 +59,13 @@ public class DownloaderGH {
             log.appendText(writer.toString());
             }
         }
-    public File createTempDirectory() {
+    private File createTempDirectory() {
         File tempfolder = new File(System.getProperty("user.home") + "\\.adblibs");
         if(!tempfolder.exists())
             tempfolder.mkdir();
         return tempfolder;
     }
-    public boolean existsTempDirectory(String filename){
+    private boolean existsTempDirectory(String filename){
         File temp = null;
         if(!filename.equals("folder"))
             temp = new File(System.getProperty("user.home") + "\\.adblibs\\" + filename);

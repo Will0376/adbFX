@@ -16,12 +16,12 @@ public class Controller_Wifi_Main implements Initializable  {
 
 	ResourceBundle resources;
 	String adbfile = Vars.c.pathtoadb.toString();
-
+	String ver = "1.0";
 	@Override
 	public void initialize(URL loc, ResourceBundle resources) {
 		this.resources = resources;
 		textip.setText(getIpFromFile().replaceAll("null", ""));
-		Vars.c.printText("Wi-Fi module started!");
+		Vars.c.printText("Wi-Fi module started! Version: "+ver);
 	}
 	public void connect(ActionEvent event) {
 		System.out.println("file: "+adbfile);

@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.List;
 
 public class ControllerBackup implements Initializable {
-    ResourceBundle resources;
+    private ResourceBundle resources;
     @FXML
     CheckBox alertbool;
     @FXML
@@ -37,11 +37,11 @@ public class ControllerBackup implements Initializable {
     @FXML
     TextField inputname;
 
-    String ver = "0.3";
+    String ver = "1.0";
     File backupFolder = new File(Vars.c.getPath()+"\\backups");
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Vars.c.printText("Backup module started! ver:"+ver);
+        Vars.c.printText("Backup module started! Version: "+ver);
         this.resources = resources;
         checkFolder();
         fillapplist();
@@ -57,9 +57,17 @@ public class ControllerBackup implements Initializable {
         checkFolder();
         List<String> paths = new ArrayList<>();
         File[] files = backupFolder.listFiles();
-        for (File file : files) {
-            paths.add(file.getAbsolutePath());
-            System.out.println(file.getAbsolutePath());
+        System.out.println(backupFolder);
+        try {
+            for (File file : files) {
+                paths.add(file.getAbsolutePath());
+                System.out.println(file.getAbsolutePath());
+            }
+        }
+        catch (NullPointerException e){
+            System.out.println("Error loading backup folder!");
+            Vars.c.printText("Error loading backup folder!");
+            e.printStackTrace();
         }
         listbackup.setItems(FXCollections.observableArrayList(paths));
     }
@@ -69,7 +77,12 @@ public class ControllerBackup implements Initializable {
         listapp.setItems(FXCollections.observableArrayList(""));
         Vars.c.startProgram(false,"shell","\"pm list packages\"|cut -f 2 -d \":\"");
         while(Vars.threadstartprogram.isAlive()){ } //wait :D
-        List<String> pkg = Arrays.asList(Vars.c.oldlog.split("\\s"));
+        List<String> pkg = new ArrayList<>(); //= Arrays.asList(Vars.c.oldlog.split("\\s"));
+        for(String pkgs : Vars.c.oldlog.split("\\s"))
+        {
+            if(!pkgs.equals("") && !pkgs.equals(" "))
+                pkg.add(pkgs);
+        }
         listapp.setItems(FXCollections.observableArrayList(pkg));
     }
     public void reloadapp(){
