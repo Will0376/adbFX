@@ -9,28 +9,38 @@ import java.util.*;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import ru.will0376.adbfx.Locales.Vars;
 
 public class Controller implements Initializable {
     @FXML
     public TextArea TextField;
     @FXML
     Hyperlink HL1;
-    ResourceBundle resources;
+    @FXML
+    Menu device;
+    @FXML
+    Text deviceused;
+
+    File pathtoadb = null;
+    private ResourceBundle resources;
     private Scene stage;
     private String[] phrases = new String[]{"devices [-l]","Failed to install","cut:"};
-    public File pathtoadb = null;
+    private String DeviceSerial = null;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getPathtoadb();
@@ -47,8 +57,9 @@ public class Controller implements Initializable {
     }
 
     /**
-     * todo: <DONE>Сделать бкапер апк-шек
+     * todo:
      *       Сделать бкапер кеша и сейвов
+     *       FastBoot Manager(shell + flasher :D)
      */
 
     public void сlearFl(ActionEvent event) {
@@ -59,13 +70,39 @@ public class Controller implements Initializable {
         startUP();
     }
 
-    protected void startUP() {
+    private void startUP() {
         startProgram("devices");
+        while (Vars.threadstartprogram.isAlive()){}
+        addDevicesToMenu(oldlog.replaceAll("List of devices attached","").replaceAll("(unauthorized|device|sideload|offline)","").trim());
     }
+
+    private void addDevicesToMenu(String allDevices) {
+        device.getItems().remove(1,device.getItems().size());
+            String tmp = allDevices.split(" ")[0];
+            DeviceSerial = tmp;
+            printText(printRes(true, "main.usedDevice")+tmp);
+            deviceused.setText(tmp);
+
+        for(int i = 0;i < allDevices.split(" ").length;i++) {
+            String tmp2 = allDevices.split(" ")[i].trim();
+            MenuItem mi = new MenuItem(tmp2);
+            if (!tmp2.equals("")){
+                EventHandler eh = event -> {
+                    DeviceSerial = tmp2;
+                printText(printRes(true, "main.usedDevice")+tmp2);
+                    deviceused.setText(tmp2);
+                };
+                mi.setOnAction(eh);
+                device.getItems().add(mi);
+            }
+        }
+    }
+
     public void hl1open() {
         openBrw("https://www.xda-developers.com/install-adb-windows-macos-linux/");
     }
-    public void openBrw(String url) {
+
+    void openBrw(String url) {
         try {
             URI uri = new URI(url);
             Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
@@ -92,7 +129,8 @@ public class Controller implements Initializable {
         }
 
     }
-    public void installToPhone(List<File> files) {
+
+    private void installToPhone(List<File> files) {
         Thread install = new Thread(() -> {
             for (File file : files) {
                 System.out.println("Install: " + file.getName());
@@ -109,22 +147,29 @@ public class Controller implements Initializable {
     public void openAbout(ActionEvent event) {
         openFXML("About","null","400","270");
     }
+
     public void adbShell(ActionEvent event) {
         openFXML("Shell","Shell","668","122");
     }
+
     public void openWifiModule(ActionEvent event) {
         openFXML("Wifi_Main","Wifi Main","464","170");
     }
+
     public void openFAQ(ActionEvent event) {
         openFXML("FAQ","FAQ","618","335");
     }
+
     public void openBackup(){
         openFXML("Backup","Backup","588","595");
     }
-    public void openAppMan(){openFXML("AppManager","null","600","385");}
+
+    public void openAppMan(){
+        openFXML("AppManager","null","600","385");
+    }
+
     private void openFXML(String... text) {
         try {
-            // 	Main.c = this;
             Vars.c = this;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/"+text[0]+".fxml"));
             fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
@@ -145,6 +190,7 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
     public void doExit(ActionEvent event) {
         Platform.exit();
         System.exit(0);
@@ -154,17 +200,20 @@ public class Controller implements Initializable {
         stage = Main.getScene();
         stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale(Locale.getDefault().getLanguage()))));
     }
+
     public void changeLangEn() throws IOException {
         stage = Main.getScene();
         Main.locale = new Locale("en");
         stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("en"))));
     }
+
     public void changeLangRu() throws IOException {
         stage = Main.getScene();
         Main.locale = new Locale("ru");
         stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
     }
-    public String printRes(boolean ret,String... key) {
+
+    String printRes(boolean ret, String... key) {
 
         try {
             if (key.length == 2) {
@@ -184,16 +233,22 @@ public class Controller implements Initializable {
         }
         return null;
     }
-    public void printText(String text) {
+
+    void printText(String text) {
         TextField.appendText(text + System.getProperty("line.separator"));
     }
-    public String oldlog = "";
-    public int startProgram(boolean printlog,String... arg){
+
+    String oldlog = "";
+    void startProgram(boolean printlog, String... arg){
         oldlog = "";
         Thread start = new Thread(() -> {
             try {
                 List<String> list = new ArrayList<String>();
                 list.add(pathtoadb.getAbsolutePath());
+                if(DeviceSerial != null) {
+                    list.add("-s");
+                    list.add(DeviceSerial);
+                }
                 for (int i = 0;i<arg.length;i++)
                     list.add(arg[i]);
                 for(int i = 0;i < list.size();i++) {
@@ -232,9 +287,9 @@ public class Controller implements Initializable {
         start.setName("StartProgramTH");
         start.start();
         Vars.threadstartprogram = start;
-        return 0;
     }
-    public void startProgram(String... arg){
+
+    void startProgram(String... arg){
         startProgram(true,arg);
     }
 
@@ -252,18 +307,17 @@ public class Controller implements Initializable {
     }
 
     private boolean textTester(String line) {
-        for (int i = 0; i < phrases.length; i++) {
-            if (line.contains(phrases[i])) {
+        for (String phrase : phrases) {
+            if (line.contains(phrase)) {
                 return true;
-            }
-            else if(line.matches("\\[\\s\\d\\d\\%\\].+")){
+            } else if (line.matches("\\[\\s\\d\\d\\%\\].+")) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isWindows(){
+    boolean isWindows(){
         String os = System.getProperty("os.name").toLowerCase();
         return (os.contains("win"));
     }
@@ -274,6 +328,7 @@ public class Controller implements Initializable {
         else
             pathtoadb = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb");
     }
+
     String getPath(){
         if(isWindows()){
             return pathtoadb.getAbsolutePath().substring(0,pathtoadb.toString().length() - 7);
@@ -282,6 +337,7 @@ public class Controller implements Initializable {
             return pathtoadb.getAbsolutePath().substring(0,pathtoadb.toString().length() - 3);
 
     }
+
     void openFolder(File file){
 
         Desktop desktop = null;
@@ -295,20 +351,26 @@ public class Controller implements Initializable {
             System.out.println(e);
         }
     }
-    public String getOldlog(){
+
+    String getOldlog(){
         return oldlog;
     }
+
     public void deviceReboot(){
         startProgram("shell","reboot");
     }
+
     public void deviceRebootRecovery(){
         startProgram("shell","reboot recovery");
     }
+
     public void deviceRebootBootloader(){
         startProgram("shell","reboot fastboot");
     }
+
     public void deviceSoftReboot(){
         startProgram("shell","su","-c","pkill","zygote");
     }
+
 }
 	  

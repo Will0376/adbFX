@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import ru.will0376.adbfx.Locales.Vars;
 
 public class Controller_Wifi_Main implements Initializable  {
 	 @FXML

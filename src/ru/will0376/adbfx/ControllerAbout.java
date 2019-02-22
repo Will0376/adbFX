@@ -13,8 +13,6 @@ import javafx.scene.control.TextArea;
 public class ControllerAbout implements Initializable {
 	   @FXML
 	   private TextArea textAbout;
-	   @FXML
-	   private Button button;
 
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
@@ -24,7 +22,7 @@ public class ControllerAbout implements Initializable {
 			printText("By Will0376 =)");
 			textAbout.setWrapText(true);
 		}
-		public void openGithub(ActionEvent event) {
+		public void openGithub() {
 			new Controller().openBrw("https://github.com/Will0376/adbFX");
 		}
 		private void printText(String text) {

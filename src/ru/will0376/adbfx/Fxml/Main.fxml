@@ -51,12 +51,16 @@
                   <MenuItem mnemonicParsing="false" onAction="#openAbout" text="%key.main.bar.help.About" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="%key.main.bar.device">
+            <Menu fx:id="device" mnemonicParsing="false" text="%key.main.bar.device">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#deviceReboot" text="%key.main.bar.device.reboot" />
-                  <MenuItem mnemonicParsing="false" onAction="#deviceRebootRecovery" text="%key.main.bar.device.rebootRecovery" />
-                  <MenuItem mnemonicParsing="false" onAction="#deviceRebootBootloader" text="%key.main.bar.device.rebootBootloader" />
-                  <MenuItem mnemonicParsing="false" onAction="#deviceSoftReboot" text="%key.main.bar.device.rebootSoft" />
+                  <Menu fx:id="device1" mnemonicParsing="false" text="%key.main.bar.rebootlist">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#deviceReboot" text="%key.main.bar.device.reboot" />
+                        <MenuItem mnemonicParsing="false" onAction="#deviceRebootRecovery" text="%key.main.bar.device.rebootRecovery" />
+                        <MenuItem mnemonicParsing="false" onAction="#deviceRebootBootloader" text="%key.main.bar.device.rebootBootloader" />
+                        <MenuItem mnemonicParsing="false" onAction="#deviceSoftReboot" text="%key.main.bar.device.rebootSoft" />
+                     </items>
+                  </Menu>
               </items>
             </Menu>
         </menus>
@@ -68,6 +72,8 @@
       <Hyperlink fx:id="HL1" layoutX="337.0" layoutY="29.0" onAction="#hl1open" text="%key.main.HL1" />
       <Button layoutX="623.0" layoutY="300.0" mnemonicParsing="false" onAction="#openBackup" prefHeight="25.0" prefWidth="88.0" text="%main.backupwindow" />
       <Button layoutX="229.0" layoutY="300.0" mnemonicParsing="false" onAction="#openAppMan" prefHeight="25.0" prefWidth="130.0" text="%main.appManager" />
+      <Text layoutX="433.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%main.usedDevice" wrappingWidth="107.13671875" />
+      <Text fx:id="deviceused" layoutX="504.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="118.13672655820847" />
       <!--<Text layoutX="15.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wi-Fi ADB:" wrappingWidth="200.0" />
        <TextField fx:id="textFwifi" layoutX="60.0" layoutY="209.0" prefHeight="25.0" prefWidth="155.0" />
        <Text layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ip:" wrappingWidth="38.13671875" />
