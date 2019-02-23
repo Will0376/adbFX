@@ -281,9 +281,7 @@ public class Controller implements Initializable {
                 process.waitFor();
             }
             catch (IOException | InterruptedException e){
-                StringWriter errors = new StringWriter();
                 e.printStackTrace();
-                printText(errors.toString());
             }
         });
         start.setName("StartProgramTH");
