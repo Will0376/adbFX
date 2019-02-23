@@ -46,7 +46,7 @@ public class DownloaderGH {
             InputStream input  = http.getInputStream();
             byte[] buffer = new byte[4096];
             int n  = -1;
-            OutputStream output = new FileOutputStream(new File(System.getProperty("user.home") + "\\.adblibs\\" + fileName));
+            OutputStream output = new FileOutputStream(new File(System.getProperty("user.home") + "/.adblibs/" + fileName));
             while ((n = input.read(buffer)) != -1) {
                 output.write( buffer, 0, n );
             }
@@ -60,7 +60,7 @@ public class DownloaderGH {
             }
         }
     private File createTempDirectory() {
-        File tempfolder = new File(System.getProperty("user.home") + "\\.adblibs");
+        File tempfolder = new File(System.getProperty("user.home") + "/.adblibs");
         if(!tempfolder.exists())
             tempfolder.mkdir();
         return tempfolder;
@@ -68,9 +68,9 @@ public class DownloaderGH {
     private boolean existsTempDirectory(String filename){
         File temp = null;
         if(!filename.equals("folder"))
-            temp = new File(System.getProperty("user.home") + "\\.adblibs\\" + filename);
+            temp = new File(System.getProperty("user.home") + "/.adblibs/" + filename);
         else
-            temp = new File(System.getProperty("user.home") + "\\.adblibs");
+            temp = new File(System.getProperty("user.home") + "/.adblibs");
 
         return temp.exists();
     }

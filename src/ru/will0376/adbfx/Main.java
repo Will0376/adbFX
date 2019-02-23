@@ -35,7 +35,7 @@ public class Main extends Application {
             Parent root = fxmlload.load();
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/logo.png")));
             primaryStage.setTitle(name);
-            primaryStage.setScene(new Scene(root, 710, 320));
+            primaryStage.setScene(new Scene(root, 733, 332));
            	 scene = primaryStage.getScene();
             primaryStage.setResizable(false);
             primaryStage.show();

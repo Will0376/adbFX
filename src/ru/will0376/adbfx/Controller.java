@@ -281,7 +281,9 @@ public class Controller implements Initializable {
                 process.waitFor();
             }
             catch (IOException | InterruptedException e){
+                StringWriter errors = new StringWriter();
                 e.printStackTrace();
+                printText(errors.toString());
             }
         });
         start.setName("StartProgramTH");
@@ -324,9 +326,9 @@ public class Controller implements Initializable {
 
     private void getPathtoadb() {
         if(isWindows())
-            pathtoadb = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb.exe");
+            pathtoadb = new File(System.getProperty("user.home") + "/.adblibs/" + "adb.exe");
         else
-            pathtoadb = new File(System.getProperty("user.home") + "\\.adblibs\\" + "adb");
+            pathtoadb = new File(System.getProperty("user.home") + "/.adblibs/" + "adb");
     }
 
     String getPath(){
