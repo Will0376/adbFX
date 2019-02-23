@@ -282,6 +282,7 @@ public class Controller implements Initializable {
             }
             catch (IOException | InterruptedException e){
                 e.printStackTrace();
+
             }
         });
         start.setName("StartProgramTH");
