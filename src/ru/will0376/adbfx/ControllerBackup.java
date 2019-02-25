@@ -37,7 +37,7 @@ public class ControllerBackup implements Initializable {
     TextField inputname;
 
     String ver = "1.0";
-    File backupFolder = new File(Vars.c.getPath()+"\\backups");
+    File backupFolder = new File(Vars.c.getPath()+"/backups");
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Vars.c.printText("Backup module started! Version: "+ver);

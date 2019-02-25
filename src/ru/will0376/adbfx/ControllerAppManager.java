@@ -30,7 +30,7 @@ public class ControllerAppManager implements Initializable {
 
 	private List<String> PkgList = new ArrayList<>();
 	private String ver = "1.1";
-	private File backupApk = new File(Vars.c.getPath()+"\\backupAPK");
+	private File backupApk = new File(Vars.c.getPath()+"/backupAPK");
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Vars.c.printText("Apk Manager module started! Version: " + ver);
@@ -128,8 +128,8 @@ public class ControllerAppManager implements Initializable {
 				Vars.c.startProgram(tmp2);
 				while (Vars.threadstartprogram.isAlive()){}
 
-				if(new File(backupApk.getAbsolutePath()+"\\base.apk").exists()){
-					new File(backupApk.getAbsolutePath() + "\\base.apk").renameTo(new File(backupApk.getAbsolutePath()+"\\" + path+".apk"));
+				if(new File(backupApk.getAbsolutePath()+"/base.apk").exists()){
+					new File(backupApk.getAbsolutePath() + "/base.apk").renameTo(new File(backupApk.getAbsolutePath()+"/" + path+".apk"));
 				}
 			}
 		});
