@@ -26,14 +26,10 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class Controller implements Initializable {
-    @FXML
-    public TextArea TextField;
-    @FXML
-    Hyperlink HL1;
-    @FXML
-    Menu device;
-    @FXML
-    Text deviceused;
+    @FXML public TextArea TextField;
+    @FXML Hyperlink HL1;
+    @FXML Menu device;
+    @FXML Text deviceused;
 
     File pathtoadb = null;
     private ResourceBundle resources;
@@ -58,8 +54,8 @@ public class Controller implements Initializable {
 
     /**
      * todo:
-     *       Сделать бкапер кеша и сейвов
-     *       FastBoot Manager(shell + flasher :D)
+     *       Сделать бкапер кеша и сейвов(наводка: /data/data/<app name packet>/*)
+     *       ~~~Hopes and Dreams~~~
      */
 
     public void сlearFl(ActionEvent event) {

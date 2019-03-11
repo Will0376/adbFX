@@ -10,8 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 public class Controller_Wifi_Main implements Initializable  {
-	 @FXML
-	 private TextField textip;
+	 @FXML private TextField textip;
 
 	ResourceBundle resources;
 	String adbfile = Vars.c.pathtoadb.toString();

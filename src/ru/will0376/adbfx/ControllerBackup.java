@@ -17,30 +17,22 @@ import java.util.List;
 
 public class ControllerBackup implements Initializable {
     private ResourceBundle resources;
-    @FXML
-    CheckBox alertbool;
-    @FXML
-    CheckBox apk;
-    @FXML
-    CheckBox obb;
-    @FXML
-    CheckBox shared;
-    @FXML
-    CheckBox nosystem;
-    @FXML
-    CheckBox all;
-    @FXML
-    ListView<String> listapp;
-    @FXML
-    ListView<String> listbackup;
-    @FXML
-    TextField inputname;
+    @FXML CheckBox alertbool;
+    @FXML CheckBox apk;
+    @FXML CheckBox obb;
+    @FXML CheckBox shared;
+    @FXML CheckBox nosystem;
+    @FXML CheckBox all;
+    @FXML ListView<String> listapp;
+    @FXML ListView<String> listbackup;
+    @FXML TextField inputname;
 
     String ver = "1.0";
     File backupFolder = new File(Vars.c.getPath()+"/backups");
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Vars.c.printText("Backup module started! Version: "+ver);
+        Vars.c.printRes(false,"warring.save/restoreApk");
         this.resources = resources;
         checkFolder();
         fillapplist();

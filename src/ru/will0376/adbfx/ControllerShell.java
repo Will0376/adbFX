@@ -11,8 +11,7 @@ import javafx.scene.control.TextArea;
 
 public class ControllerShell implements Initializable {
 
-	   @FXML
-	   private TextArea inputShell;
+	   @FXML private TextArea inputShell;
 	   private ResourceBundle resources;
 	private String ver = "1.0";
 	@Override

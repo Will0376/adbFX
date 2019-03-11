@@ -17,16 +17,11 @@ import java.util.ResourceBundle;
 
 public class ControllerAppManager implements Initializable {
 
-	@FXML
-	ListView<String> list;
-	@FXML
-	CheckBox k;
-	@FXML
-	CheckBox user0;
-	@FXML
-	CheckBox rootEnabler;
-	@FXML
-	TextField filterfield;
+	@FXML ListView<String> list;
+	@FXML CheckBox k;
+	@FXML CheckBox user0;
+	@FXML CheckBox rootEnabler;
+	@FXML TextField filterfield;
 
 	private List<String> PkgList = new ArrayList<>();
 	private String ver = "1.1";

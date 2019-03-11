@@ -25,10 +25,8 @@ import javafx.scene.control.TextArea;
 public class ControllerFAQ implements Initializable {
 	String locale = null;
 	
-	@FXML
-	TextArea flFAQ;
-	@FXML
-	Button reloadJs;
+	@FXML TextArea flFAQ;
+	@FXML Button reloadJs;
 	
 	ResourceBundle resources;
 	

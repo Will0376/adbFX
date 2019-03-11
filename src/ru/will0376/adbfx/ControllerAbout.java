@@ -11,9 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 public class ControllerAbout implements Initializable {
-	   @FXML
-	   private TextArea textAbout;
-
+	   @FXML private TextArea textAbout;
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			printText("		  ~~~~AdbFX~~~~	");
