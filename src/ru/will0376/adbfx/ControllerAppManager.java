@@ -40,6 +40,7 @@ public class ControllerAppManager implements Initializable {
 		filterfield.textProperty().addListener((ChangeListener) (observable, oldValue, newValue) -> filterList((String) oldValue, (String) newValue));
 		deletebutton.setFocusTraversable(false);
 		filterfield.setFocusTraversable(true);
+		cache.setSelected(true);
 
 	}
 
@@ -69,6 +70,7 @@ public class ControllerAppManager implements Initializable {
 		}
 	list.setItems(FXCollections.observableArrayList(PkgList));
 	}
+
 	public void delete() {
 		List<String> start = new ArrayList<String>();
 		start.add("shell");
@@ -89,17 +91,15 @@ public class ControllerAppManager implements Initializable {
 			start.add(path);
 			String[] tmp = (String[]) start.toArray(new String[0]);
 
-			Platform.runLater(() -> {
 				Vars.c.printText(Vars.c.printRes(true, "appman.deleting") + path + ":");
 				Vars.c.startProgram(tmp);
 				while (Vars.threadstartprogram.isAlive()) {
 				}
-			});
 			start.remove(start.size() - 1);
 		}
 		filling();
 	}
-	String PathToSd = getSd(); //get path to sd card.
+	String PathToSd = getSd().trim()+"/"; //get path to sd card.
 	public void backup(){
 		/**
 		 * backup:
@@ -156,7 +156,8 @@ public class ControllerAppManager implements Initializable {
 	/**
 	 *  0. mkdir /sd/tempcache
 	 * 1.su -c cp -r /data/data/pak.name /sd/tempcache
-		2. pull /sd/tempcache/pak.name <home>/CacheBackup/pak.name
+	 * 1.5. cd sd/tempcache tar -cvpf name name/
+		2. pull /sd/tempcache/name.tar.gz <home>/CacheBackup/
 	 if(done)
 	 3. rm -rf /sd/tempcache
 	 */
@@ -164,14 +165,14 @@ public class ControllerAppManager implements Initializable {
 		List<String> start2 = new ArrayList<String>();
 		start2.add("shell");
 		start2.add("mkdir");
-		start2.add(PathToSd.trim()+"/tempcache");
+		start2.add(PathToSd+"tempcache");
 		Vars.c.startProgram((String[]) start2.toArray(new String[0]));
 	}
 	private void removeTemp(){
 		List<String> start2 = new ArrayList<String>();
 		start2.add("shell");
 		start2.add("rm -rf");
-		start2.add(PathToSd.trim()+"/tempcache");
+		start2.add(PathToSd+"tempcache");
 		Vars.c.startProgram((String[]) start2.toArray(new String[0]));
 	}
 	private void saveCache(String name){
@@ -179,20 +180,35 @@ public class ControllerAppManager implements Initializable {
 
 		start.add("shell");start.add("su");start.add("-c");start.add("cp");start.add("-r");
 		start.add("/data/data/"+name);
-		start.add(PathToSd.trim()+"/tempcache/");
+		start.add(PathToSd+"tempcache/");
 		Vars.c.startProgram((String[]) start.toArray(new String[0]));
 		while (Vars.threadstartprogram.isAlive()){}
+		createTarGz(name);
 		pullCache(name);
 	}
 	private void pullCache(String name){
 		List<String> start = new ArrayList<String>();
-
 		start.add("pull");
-		start.add(PathToSd.trim()+"/tempcache/"+name);
-		start.add(Vars.c.getPath()+"CacheBackup/"+name);
+		start.add(PathToSd+"tempcache/"+name+".tar");
+		start.add(Vars.c.getPath()+"CacheBackup/");
 		Vars.c.startProgram((String[]) start.toArray(new String[0]));
 		while (Vars.threadstartprogram.isAlive()){}
 	}
+
+	private void createTarGz(String name){
+		List<String> start = new ArrayList<>();
+		start.add("shell");
+		start.add("cd");
+		start.add(PathToSd+"tempcache");
+		start.add("&&");
+		start.add("tar");
+		start.add("-cpf");
+		start.add(name+".tar");
+		start.add(name+"/");
+		Vars.c.startProgram(false,(String[]) start.toArray(new String[0]));
+		while(Vars.threadstartprogram.isAlive()){}
+	}
+
 	private String getSd(){
 		List<String> start = new ArrayList<>();
 		start.add("shell");
