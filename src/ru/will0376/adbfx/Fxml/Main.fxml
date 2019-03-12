@@ -74,6 +74,7 @@
       <Button layoutX="229.0" layoutY="300.0" mnemonicParsing="false" onAction="#openAppMan" prefHeight="25.0" prefWidth="130.0" text="%main.appManager" />
       <Text layoutX="433.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%main.usedDevice" wrappingWidth="107.13671875" />
       <Text fx:id="deviceused" layoutX="504.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="118.13672655820847" />
+      <Button layoutX="439.0" layoutY="300.0" mnemonicParsing="false" onAction="#openCache" prefHeight="25.0" prefWidth="130.0" text="Cache Manager" />
       <!--<Text layoutX="15.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wi-Fi ADB:" wrappingWidth="200.0" />
        <TextField fx:id="textFwifi" layoutX="60.0" layoutY="209.0" prefHeight="25.0" prefWidth="155.0" />
        <Text layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ip:" wrappingWidth="38.13671875" />

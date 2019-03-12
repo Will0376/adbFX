@@ -72,10 +72,7 @@ public class Controller_Wifi_Main implements Initializable  {
 			
 		}
 		private File getpath(){
-			if(Vars.c.isWindows())
-				return new File(adbfile.replaceAll("adb.exe", "")+"config.cfg");
-			else
-				return new File(adbfile.replaceAll("adb", "")+"config.cfg");
+				return new File(Vars.c.getPath()+"config.cfg");
 		}
 			
 }

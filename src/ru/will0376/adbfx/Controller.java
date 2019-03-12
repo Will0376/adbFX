@@ -163,6 +163,8 @@ public class Controller implements Initializable {
     public void openAppMan(){
         openFXML("AppManager","null","600","385");
     }
+    public void openCache(){ openFXML("CacheManager","null","600","401"); }
+
 
     private void openFXML(String... text) {
         try {
@@ -245,10 +247,9 @@ public class Controller implements Initializable {
                     list.add("-s");
                     list.add(DeviceSerial);
                 }
-                for (int i = 0;i<arg.length;i++)
-                    list.add(arg[i]);
-                for(int i = 0;i < list.size();i++) {
-                    System.out.print(list.get(i)+" ");
+                for (String s : arg) list.add(s);
+                for (String s : list) {
+                    System.out.print(s + " ");
                 }
                 System.out.print(System.lineSeparator());
                 ProcessBuilder procBuilder = new ProcessBuilder(list);
@@ -298,9 +299,7 @@ public class Controller implements Initializable {
         } else if (line.contains(phrases[2])) {
             printRes(false, "main.error.busybox.not.found");
         }
-        else if(line.contains("\\[\\s\\d{2}\\%\\]")){
-
-        }
+        else if(line.contains("\\[\\s\\d{2}\\%\\]")){ }
     }
 
     private boolean textTester(String line) {

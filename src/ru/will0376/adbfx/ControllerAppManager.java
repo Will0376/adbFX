@@ -21,18 +21,26 @@ public class ControllerAppManager implements Initializable {
 	@FXML CheckBox k;
 	@FXML CheckBox user0;
 	@FXML CheckBox rootEnabler;
+	@FXML CheckBox cache;
 	@FXML TextField filterfield;
+	@FXML Button deletebutton;
+	@FXML Button backupbutton;
 
 	private List<String> PkgList = new ArrayList<>();
 	private String ver = "1.1";
+	private String vercache = "1.0";
 	private File backupApk = new File(Vars.c.getPath()+"/backupAPK");
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Vars.c.printText("Apk Manager module started! Version: " + ver);
+		Vars.c.printText("Cache Backup module started! Version: " + vercache);
 		checkFolder();
 		list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-	filling();
+			filling();
 		filterfield.textProperty().addListener((ChangeListener) (observable, oldValue, newValue) -> filterList((String) oldValue, (String) newValue));
+		deletebutton.setFocusTraversable(false);
+		filterfield.setFocusTraversable(true);
+
 	}
 
 	private void filterList(String oldValue, String newValue) {
@@ -79,7 +87,7 @@ public class ControllerAppManager implements Initializable {
 
 		for (String path : list.getSelectionModel().getSelectedItems()) {
 			start.add(path);
-			String[] tmp = (String[]) start.stream().toArray(String[]::new);
+			String[] tmp = (String[]) start.toArray(new String[0]);
 
 			Platform.runLater(() -> {
 				Vars.c.printText(Vars.c.printRes(true, "appman.deleting") + path + ":");
@@ -91,6 +99,7 @@ public class ControllerAppManager implements Initializable {
 		}
 		filling();
 	}
+	String PathToSd = getSd(); //get path to sd card.
 	public void backup(){
 		/**
 		 * backup:
@@ -106,32 +115,96 @@ public class ControllerAppManager implements Initializable {
 			}
 			start.add("pm");
 			start.add("path");
+			if(cache.isSelected()){ // mkdir /sd/tempcache
+				mkdirTemp();
+			}
 			for (String path : list.getSelectionModel().getSelectedItems()) {
 				start.add(path);
-				String[] tmp = (String[]) start.stream().toArray(String[]::new);
+				String[] tmp = (String[]) start.toArray(new String[0]);
 
 				Vars.c.printText(path + ":");
 				Vars.c.startProgram(tmp);
 				while (Vars.threadstartprogram.isAlive()) { }
 				start.remove(start.size() - 1);
 				///
-				List<String> start2 = new ArrayList<>();
-				start2.add("pull");
-				start2.add(Vars.c.oldlog.split("package:")[1].trim());
-				start2.add(backupApk.getAbsolutePath());
-				String[] tmp2 = (String[]) start2.stream().toArray(String[]::new);
-				Vars.c.startProgram(tmp2);
-				while (Vars.threadstartprogram.isAlive()){}
+				copyApkFromDevice();
+				renameApkTmp(path);
 
-				if(new File(backupApk.getAbsolutePath()+"/base.apk").exists()){
-					new File(backupApk.getAbsolutePath() + "/base.apk").renameTo(new File(backupApk.getAbsolutePath()+"/" + path+".apk"));
+				if(cache.isSelected()){
+					saveCache(path);
 				}
 			}
+		if(cache.isSelected()){
+			removeTemp();
+		}
 		});
 	}
+	private void copyApkFromDevice(){
+		List<String> start2 = new ArrayList<>();
+		start2.add("pull");
+		start2.add(Vars.c.oldlog.split("package:")[1].trim());
+		start2.add(backupApk.getAbsolutePath());
+		String[] tmp2 = (String[]) start2.toArray(new String[0]);
+		Vars.c.startProgram(tmp2);
+		while (Vars.threadstartprogram.isAlive()){}
+	}
+	private void renameApkTmp(String name){
+		if(new File(backupApk.getAbsolutePath()+"/base.apk").exists()){
+			new File(backupApk.getAbsolutePath() + "/base.apk").renameTo(new File(backupApk.getAbsolutePath()+"/" + name+".apk"));
+		}
+	}
+	/**
+	 *  0. mkdir /sd/tempcache
+	 * 1.su -c cp -r /data/data/pak.name /sd/tempcache
+		2. pull /sd/tempcache/pak.name <home>/CacheBackup/pak.name
+	 if(done)
+	 3. rm -rf /sd/tempcache
+	 */
+	private void mkdirTemp(){
+		List<String> start2 = new ArrayList<String>();
+		start2.add("shell");
+		start2.add("mkdir");
+		start2.add(PathToSd.trim()+"/tempcache");
+		Vars.c.startProgram((String[]) start2.toArray(new String[0]));
+	}
+	private void removeTemp(){
+		List<String> start2 = new ArrayList<String>();
+		start2.add("shell");
+		start2.add("rm -rf");
+		start2.add(PathToSd.trim()+"/tempcache");
+		Vars.c.startProgram((String[]) start2.toArray(new String[0]));
+	}
+	private void saveCache(String name){
+		List<String> start = new ArrayList<String>();
+
+		start.add("shell");start.add("su");start.add("-c");start.add("cp");start.add("-r");
+		start.add("/data/data/"+name);
+		start.add(PathToSd.trim()+"/tempcache/");
+		Vars.c.startProgram((String[]) start.toArray(new String[0]));
+		while (Vars.threadstartprogram.isAlive()){}
+		pullCache(name);
+	}
+	private void pullCache(String name){
+		List<String> start = new ArrayList<String>();
+
+		start.add("pull");
+		start.add(PathToSd.trim()+"/tempcache/"+name);
+		start.add(Vars.c.getPath()+"CacheBackup/"+name);
+		Vars.c.startProgram((String[]) start.toArray(new String[0]));
+		while (Vars.threadstartprogram.isAlive()){}
+	}
+	private String getSd(){
+		List<String> start = new ArrayList<>();
+		start.add("shell");
+		start.add("echo");
+		start.add("$EXTERNAL_STORAGE");
+		Vars.c.startProgram((String[]) start.toArray(new String[0]));
+		while(Vars.threadstartprogram.isAlive()){}
+		return Vars.c.getOldlog();
+	}
+
 	private void checkFolder(){
-		if(backupApk.exists()){ }
-		else backupApk.mkdir();
+		if(!backupApk.exists()){ backupApk.mkdir();}
 	}
 	public void reloadList(){
 		filling();
