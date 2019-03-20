@@ -40,7 +40,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getPathtoadb();
-        new DownloaderGH().init(TextField);
+        new DownloaderGH().init();
         this.resources = resources;
         TextField.setWrapText(true);
         TextField.setEditable(false);
@@ -54,7 +54,7 @@ public class Controller implements Initializable {
 
     /**
      * todo:
-     *       Сделать бкапер кеша и сейвов(наводка: /data/data/<app name packet>/*)
+     *       Сделать бкапер с карты памяти
      *       ~~~Hopes and Dreams~~~
      */
 
@@ -120,14 +120,13 @@ public class Controller implements Initializable {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Apk", "*.apk"));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All", "*.*"));
         List<File> files = fileChooser.showOpenMultipleDialog((Window) Main.ps);
-        if (files != null) {
+        if (files != null)
             installToPhone(files);
-        }
 
     }
 
     private void installToPhone(List<File> files) {
-        Thread install = new Thread(() -> {
+ //       Thread install = new Thread(() -> {
             for (File file : files) {
                 System.out.println("Install: " + file.getName());
                 printText("Install: " + file.getName());
@@ -135,9 +134,9 @@ public class Controller implements Initializable {
                 while (Vars.threadstartprogram.isAlive()) {
                 }
             }
-        });
-        install.setName("Install To Phone TH");
-        install.start();
+//        });
+ //       install.setName("Install To Phone TH");
+ //       install.start();
     }
 
     public void openAbout(ActionEvent event) {
@@ -182,7 +181,6 @@ public class Controller implements Initializable {
             stage1.setScene(new Scene(root1, Integer.parseInt(text[2]), Integer.parseInt(text[3])));
             stage1.initOwner((Window)Main.ps);
             stage1.setResizable(false);
-
             stage1.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -211,16 +209,15 @@ public class Controller implements Initializable {
         stage.setRoot(FXMLLoader.load(getClass().getResource("Fxml/Main.fxml"),ResourceBundle.getBundle("ru/will0376/adbfx/Locales/Locale", new Locale("ru"))));
     }
 
-    String printRes(boolean ret, String... key) {
-
+    String printRes(boolean returning, String... key) {
         try {
             if (key.length == 2) {
-                if(ret) return(resources.getString(key[0]) + key[1]);
+                if(returning) return(resources.getString(key[0]) + key[1]);
                 else
                     printText(resources.getString(key[0]) + key[1]);
             }
             else {
-                if(ret) return(resources.getString(key[0]));
+                if(returning) return(resources.getString(key[0]));
                 else
                     printText(resources.getString(key[0]));
             }
@@ -292,23 +289,21 @@ public class Controller implements Initializable {
     }
 
     private void getTextFromPhrase(String line) {
-        if (line.contains(phrases[0])) {
+        if (line.contains(phrases[0]))
             printRes(false, "main.error.adb.command");
-        } else if (line.contains(phrases[1])) {
+         else if (line.contains(phrases[1]))
             printText("Fail! Error:" + line.split("Failure")[1]);
-        } else if (line.contains(phrases[2])) {
+         else if (line.contains(phrases[2]))
             printRes(false, "main.error.busybox.not.found");
-        }
         else if(line.contains("\\[\\s\\d{2}\\%\\]")){ }
     }
 
     private boolean textTester(String line) {
         for (String phrase : phrases) {
-            if (line.contains(phrase)) {
+            if (line.contains(phrase))
                 return true;
-            } else if (line.matches("\\[\\s\\d\\d\\%\\].+")) {
+             else if (line.matches("\\[\\s\\d\\d\\%\\].+"))
                 return true;
-            }
         }
         return false;
     }
@@ -326,18 +321,14 @@ public class Controller implements Initializable {
     }
 
     String getPath(){
-        if(isWindows()){
+        if(isWindows())
             return pathtoadb.getAbsolutePath().substring(0,pathtoadb.toString().length() - 7);
-        }
         else
             return pathtoadb.getAbsolutePath().substring(0,pathtoadb.toString().length() - 3);
-
     }
 
     void openFolder(File file){
-
         Desktop desktop = null;
-
         if (Desktop.isDesktopSupported()) {
             desktop = Desktop.getDesktop();
         }

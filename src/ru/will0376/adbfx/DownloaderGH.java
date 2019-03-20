@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DownloaderGH {
-    TextArea log;
-    void init(TextArea log){
-        this.log = log;
+
+    void init(){
         if(!existsTempDirectory("folder"))
             createTempDirectory();
         if(!existsTempDirectory("adb.exe"))
@@ -56,8 +55,9 @@ public class DownloaderGH {
             PrintWriter printWriter= new PrintWriter(writer);
             e.printStackTrace(printWriter);
             e.printStackTrace();
-            log.appendText(writer.toString());
-            }
+           // log.appendText(writer.toString());
+            Vars.c.printText(writer.toString());
+        }
         }
     private File createTempDirectory() {
         File tempfolder = new File(System.getProperty("user.home") + "/.adblibs");

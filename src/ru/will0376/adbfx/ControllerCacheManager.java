@@ -25,6 +25,7 @@ public class ControllerCacheManager implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Vars.c.printText("Cache Manager module started! Version: "+ ver);
+		Vars.c.printText("Root only!");
 		checkFolder();
    		 list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		refreshList();
