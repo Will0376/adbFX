@@ -56,7 +56,7 @@ public class DownloaderGH {
             e.printStackTrace(printWriter);
             e.printStackTrace();
            // log.appendText(writer.toString());
-            Vars.c.printText(writer.toString());
+           	Controller.getController().printText(writer.toString());
         }
         }
     private File createTempDirectory() {

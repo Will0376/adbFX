@@ -20,12 +20,12 @@ public class ControllerCacheManager implements Initializable {
 @FXML TextField time;
 
 	String PathToSd = getSd().trim()+"/"; //get path to sd card.
-	String PathToFolder = Vars.c.getPath() +"CacheBackup/";
+	String PathToFolder = Controller.getController().getPath() +"CacheBackup/";
 	String ver = "1.0 Alpha";
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Vars.c.printText("Cache Manager module started! Version: "+ ver);
-		Vars.c.printText("Root only!");
+		Controller.getController().printText("Cache Manager module started! Version: "+ ver);
+		Controller.getController().printText("Root only!");
 		checkFolder();
    		 list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		refreshList();
@@ -70,16 +70,16 @@ public class ControllerCacheManager implements Initializable {
 			parm.add("tar");
 			parm.add("-xf");
 			parm.add(name);
-			Vars.c.startProgram((String[]) parm.toArray(new String[0]));
-			while(Vars.threadstartprogram.isAlive()){}
+			Controller.getController().startProgram((String[]) parm.toArray(new String[0]));
+			while(Main.threadstartprogram.isAlive()){}
 		}
 		private void pushToTemp(String name){
 			List<String> parm = new ArrayList<>();
 			parm.add("push");
 			parm.add(PathToFolder+name);
 			parm.add(PathToSd+"TempCacheRestore/"+name);
-			Vars.c.startProgram((String[]) parm.toArray(new String[0]));
-			while(Vars.threadstartprogram.isAlive()){}
+			Controller.getController().startProgram((String[]) parm.toArray(new String[0]));
+			while(Main.threadstartprogram.isAlive()){}
 		}
 		private void restoreFromTemp(String name){
 			List<String> parm = new ArrayList<>();
@@ -90,15 +90,15 @@ public class ControllerCacheManager implements Initializable {
 			parm.add("-r");
 			parm.add(PathToSd+"TempCacheRestore/"+name);
 			parm.add("/data/data/");
-			Vars.c.startProgram((String[]) parm.toArray(new String[0]));
-			while(Vars.threadstartprogram.isAlive()){}
+			Controller.getController().startProgram((String[]) parm.toArray(new String[0]));
+			while(Main.threadstartprogram.isAlive()){}
 		}
 	private void mkdirTemp(){
 		List<String> start = new ArrayList<>();
 		start.add("shell");
 		start.add("mkdir");
 		start.add(PathToSd+"TempCacheRestore");
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
 	}
 	private void chmod(String name){
 		List<String> start = new ArrayList<>();
@@ -109,8 +109,8 @@ public class ControllerCacheManager implements Initializable {
 		start.add("+x");
 		start.add("-R");
 		start.add("/data/data/"+name);
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
-		while(Vars.threadstartprogram.isAlive()){}
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
+		while(Main.threadstartprogram.isAlive()){}
 		start.clear();
 		start.add("shell");
 		start.add("su");
@@ -119,24 +119,24 @@ public class ControllerCacheManager implements Initializable {
 		start.add("-R");
 		start.add("771");
 		start.add("/data/data/"+name);
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
-		while(Vars.threadstartprogram.isAlive()){}
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
+		while(Main.threadstartprogram.isAlive()){}
 	}
 	private void removeTemp(){
 		List<String> start = new ArrayList<>();
 		start.add("shell");
 		start.add("rm -rf");
 		start.add(PathToSd+"TempCacheRestore");
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
 	}
 	private String getSd(){
 		List<String> start = new ArrayList<>();
 		start.add("shell");
 		start.add("echo");
 		start.add("$EXTERNAL_STORAGE");
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
-		while(Vars.threadstartprogram.isAlive()){}
-		return Vars.c.getOldlog();
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
+		while(Main.threadstartprogram.isAlive()){}
+		return Controller.getController().getOldlog();
 	}
 	private void start(String name){
 		List<String> start = new ArrayList<>();
@@ -145,8 +145,8 @@ public class ControllerCacheManager implements Initializable {
 		start.add("-p");
 		start.add(name);
 		start.add("1");
-		Vars.c.startProgram(false,(String[]) start.toArray(new String[0]));
-		while(Vars.threadstartprogram.isAlive()){}
+		Controller.getController().startProgram(false,(String[]) start.toArray(new String[0]));
+		while(Main.threadstartprogram.isAlive()){}
 		int i = 0;
 		while( i <= Integer.valueOf(time.getText()) * 10000){
 			i++;
@@ -162,8 +162,8 @@ public class ControllerCacheManager implements Initializable {
 		while( i <= Integer.valueOf(time.getText()) * 10000){
 			i++;
 		}
-		Vars.c.startProgram(false,(String[]) start.toArray(new String[0]));
-		while(Vars.threadstartprogram.isAlive()){}
+		Controller.getController().startProgram(false,(String[]) start.toArray(new String[0]));
+		while(Main.threadstartprogram.isAlive()){}
 	}
 	public void refreshList(){
 		list.setItems(FXCollections.observableArrayList(""));
@@ -177,7 +177,7 @@ public class ControllerCacheManager implements Initializable {
 		}
 	}
 	public void openFolder(){
-		Vars.c.openFolder(new File(PathToFolder));
+		Controller.getController().openFolder(new File(PathToFolder));
 	}
 	private void checkFolder(){
 		File folder = new File(PathToFolder);

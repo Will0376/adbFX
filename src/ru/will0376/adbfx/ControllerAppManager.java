@@ -29,11 +29,11 @@ public class ControllerAppManager implements Initializable {
 	private List<String> PkgList = new ArrayList<>();
 	private String ver = "1.1";
 	private String vercache = "1.0";
-	private File backupApk = new File(Vars.c.getPath()+"/backupAPK");
+	private File backupApk = new File(Controller.getController().getPath()+"/backupAPK");
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Vars.c.printText("Apk Manager module started! Version: " + ver);
-		Vars.c.printText("Cache Backup module started! Version: " + vercache);
+		Controller.getController().printText("Apk Manager module started! Version: " + ver);
+		Controller.getController().printText("Cache Backup module started! Version: " + vercache);
 		checkFolder();
 		list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			filling();
@@ -91,9 +91,9 @@ public class ControllerAppManager implements Initializable {
 			start.add(path);
 			String[] tmp = (String[]) start.toArray(new String[0]);
 
-				Vars.c.printText(Vars.c.printRes(true, "appman.deleting") + path + ":");
-				Vars.c.startProgram(tmp);
-				while (Vars.threadstartprogram.isAlive()) {
+				Controller.getController().printText(Controller.getController().printRes(true, "appman.deleting") + path + ":");
+				Controller.getController().startProgram(tmp);
+				while (Main.threadstartprogram.isAlive()) {
 				}
 			start.remove(start.size() - 1);
 		}
@@ -122,9 +122,9 @@ public class ControllerAppManager implements Initializable {
 				start.add(path);
 				String[] tmp = (String[]) start.toArray(new String[0]);
 
-				Vars.c.printText(path + ":");
-				Vars.c.startProgram(tmp);
-				while (Vars.threadstartprogram.isAlive()) { }
+				Controller.getController().printText(path + ":");
+				Controller.getController().startProgram(tmp);
+				while (Main.threadstartprogram.isAlive()) { }
 				start.remove(start.size() - 1);
 				///
 				copyApkFromDevice();
@@ -142,11 +142,11 @@ public class ControllerAppManager implements Initializable {
 	private void copyApkFromDevice(){
 		List<String> start2 = new ArrayList<>();
 		start2.add("pull");
-		start2.add(Vars.c.oldlog.split("package:")[1].trim());
+		start2.add(Controller.getController().oldlog.split("package:")[1].trim());
 		start2.add(backupApk.getAbsolutePath());
 		String[] tmp2 = (String[]) start2.toArray(new String[0]);
-		Vars.c.startProgram(tmp2);
-		while (Vars.threadstartprogram.isAlive()){}
+		Controller.getController().startProgram(tmp2);
+		while (Main.threadstartprogram.isAlive()){}
 	}
 	private void renameApkTmp(String name){
 		if(new File(backupApk.getAbsolutePath()+"/base.apk").exists()){
@@ -166,14 +166,14 @@ public class ControllerAppManager implements Initializable {
 		start2.add("shell");
 		start2.add("mkdir");
 		start2.add(PathToSd+"tempcache");
-		Vars.c.startProgram((String[]) start2.toArray(new String[0]));
+		Controller.getController().startProgram((String[]) start2.toArray(new String[0]));
 	}
 	private void removeTemp(){
 		List<String> start2 = new ArrayList<String>();
 		start2.add("shell");
 		start2.add("rm -rf");
 		start2.add(PathToSd+"tempcache");
-		Vars.c.startProgram((String[]) start2.toArray(new String[0]));
+		Controller.getController().startProgram((String[]) start2.toArray(new String[0]));
 	}
 	private void saveCache(String name){
 		List<String> start = new ArrayList<String>();
@@ -181,8 +181,8 @@ public class ControllerAppManager implements Initializable {
 		start.add("shell");start.add("su");start.add("-c");start.add("cp");start.add("-r");
 		start.add("/data/data/"+name);
 		start.add(PathToSd+"tempcache/");
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
-		while (Vars.threadstartprogram.isAlive()){}
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
+		while (Main.threadstartprogram.isAlive()){}
 		createTarGz(name);
 		pullCache(name);
 	}
@@ -190,9 +190,9 @@ public class ControllerAppManager implements Initializable {
 		List<String> start = new ArrayList<String>();
 		start.add("pull");
 		start.add(PathToSd+"tempcache/"+name+".tar");
-		start.add(Vars.c.getPath()+"CacheBackup/");
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
-		while (Vars.threadstartprogram.isAlive()){}
+		start.add(Controller.getController().getPath()+"CacheBackup/");
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
+		while (Main.threadstartprogram.isAlive()){}
 	}
 
 	private void createTarGz(String name){
@@ -205,8 +205,8 @@ public class ControllerAppManager implements Initializable {
 		start.add("-cpf");
 		start.add(name+".tar");
 		start.add(name+"/");
-		Vars.c.startProgram(false,(String[]) start.toArray(new String[0]));
-		while(Vars.threadstartprogram.isAlive()){}
+		Controller.getController().startProgram(false,(String[]) start.toArray(new String[0]));
+		while(Main.threadstartprogram.isAlive()){}
 	}
 
 	private String getSd(){
@@ -214,9 +214,9 @@ public class ControllerAppManager implements Initializable {
 		start.add("shell");
 		start.add("echo");
 		start.add("$EXTERNAL_STORAGE");
-		Vars.c.startProgram((String[]) start.toArray(new String[0]));
-		while(Vars.threadstartprogram.isAlive()){}
-		return Vars.c.getOldlog();
+		Controller.getController().startProgram((String[]) start.toArray(new String[0]));
+		while(Main.threadstartprogram.isAlive()){}
+		return Controller.getController().getOldlog();
 	}
 
 	private void checkFolder(){
@@ -226,9 +226,9 @@ public class ControllerAppManager implements Initializable {
 		filling();
 	}
 	private List<String> getPkg(){
-		Vars.c.startProgram(false,"shell","\"pm list packages\"|cut -f 2 -d \":\"");
-		while(Vars.threadstartprogram.isAlive()){ } //wait :D
-		List<String> pkg = Arrays.asList(Vars.c.getOldlog().split("\\s"));
+		Controller.getController().startProgram(false,"shell","\"pm list packages\"|cut -f 2 -d \":\"");
+		while(Main.threadstartprogram.isAlive()){ } //wait :D
+		List<String> pkg = Arrays.asList(Controller.getController().getOldlog().split("\\s"));
 		return pkg;
 	}
 }

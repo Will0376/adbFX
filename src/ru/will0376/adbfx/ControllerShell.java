@@ -17,17 +17,17 @@ public class ControllerShell implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.resources = resources;
-		Vars.c.printText("Shell module started! Version: "+ver);
+		Controller.getController().printText("Shell module started! Version: "+ver);
 	}
 
 		public void sendShell(ActionEvent event) {
-		Vars.c.printText("'"+inputShell.getText()+"':");
-			Vars.c.startProgram("shell", inputShell.getText());
+		Controller.getController().printText("'"+inputShell.getText()+"':");
+			Controller.getController().startProgram("shell", inputShell.getText());
 		 }
 
 		 public void doAboutThread(){
-			 Vars.threadstartprogram.stop();
-			 Vars.c.printText("Aborted!");
+			 Main.threadstartprogram.stop();
+			 Controller.getController().printText("Aborted!");
 		 }
 		 public void clearInput(){
 		inputShell.clear();

@@ -13,30 +13,30 @@ public class Controller_Wifi_Main implements Initializable  {
 	 @FXML private TextField textip;
 
 	ResourceBundle resources;
-	String adbfile = Vars.c.pathtoadb.toString();
+	String adbfile = Controller.getController().pathtoadb.toString();
 	String ver = "1.0";
 	@Override
 	public void initialize(URL loc, ResourceBundle resources) {
 		this.resources = resources;
 		textip.setText(getIpFromFile().replaceAll("null", ""));
-		Vars.c.printText("Wi-Fi module started! Version: "+ver);
+		Controller.getController().printText("Wi-Fi module started! Version: "+ver);
 	}
 	public void connect(ActionEvent event) {
 		System.out.println("file: "+adbfile);
-		Vars.c.printRes(false,"key.wifi.main.ConnectTo"," "+textip.getText());
+		Controller.getController().printRes(false,"key.wifi.main.ConnectTo"," "+textip.getText());
 		execute("connect",  textip.getText());
 }
 	public void disconnect(ActionEvent event) {
-		Vars.c.printRes(false,"key.wifi.main.Disconnected");
+		Controller.getController().printRes(false,"key.wifi.main.Disconnected");
 		execute("kill-server");
 	}
 	public void reconnect(ActionEvent event) {
-		Vars.c.printRes(false,"key.wifi.main.RecconectTo"," "+textip.getText());
+		Controller.getController().printRes(false,"key.wifi.main.RecconectTo"," "+textip.getText());
 		execute("kill-server");
 		execute("connect", textip.getText());
 	}
 	public void execute(String... command) {
-		Vars.c.startProgram(command);
+		Controller.getController().startProgram(command);
 	}
 		private String getIpFromFile() {
 			File file = getpath();
@@ -72,7 +72,7 @@ public class Controller_Wifi_Main implements Initializable  {
 			
 		}
 		private File getpath(){
-				return new File(Vars.c.getPath()+"config.cfg");
+				return new File(Controller.getController().getPath()+"config.cfg");
 		}
 			
 }

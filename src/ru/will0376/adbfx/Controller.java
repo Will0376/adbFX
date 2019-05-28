@@ -30,7 +30,7 @@ public class Controller implements Initializable {
     @FXML Hyperlink HL1;
     @FXML Menu device;
     @FXML Text deviceused;
-
+    private static Controller INSTANCE;
     File pathtoadb = null;
     private ResourceBundle resources;
     private Scene stage;
@@ -39,6 +39,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        INSTANCE = this;
         getPathtoadb();
         new DownloaderGH().init();
         this.resources = resources;
@@ -68,7 +69,7 @@ public class Controller implements Initializable {
 
     private void startUP() {
         startProgram("devices");
-        while (Vars.threadstartprogram.isAlive()){}
+        while (Main.threadstartprogram.isAlive()){}
         addDevicesToMenu(oldlog.replaceAll("List of devices attached","").replaceAll("(unauthorized|device|sideload|offline)","").trim());
     }
 
@@ -131,7 +132,7 @@ public class Controller implements Initializable {
                 System.out.println("Install: " + file.getName());
                 printText("Install: " + file.getName());
                 startProgram("install", file.getAbsolutePath());
-                while (Vars.threadstartprogram.isAlive()) {
+                while (Main.threadstartprogram.isAlive()) {
                 }
             }
 //        });
@@ -167,7 +168,6 @@ public class Controller implements Initializable {
 
     private void openFXML(String... text) {
         try {
-            Vars.c = this;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Fxml/"+text[0]+".fxml"));
             fxmlLoader.setResources(ResourceBundle.getBundle("ru.will0376.adbfx.Locales.Locale", Main.locale));
             Parent root1 = fxmlLoader.load();
@@ -281,7 +281,7 @@ public class Controller implements Initializable {
         });
         start.setName("StartProgramTH");
         start.start();
-        Vars.threadstartprogram = start;
+        Main.threadstartprogram = start;
     }
 
     void startProgram(String... arg){
@@ -359,5 +359,6 @@ public class Controller implements Initializable {
         startProgram("shell","su","-c","pkill","zygote");
     }
 
+    public static Controller getController(){ return INSTANCE;   }
 }
 	  

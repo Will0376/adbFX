@@ -15,11 +15,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	public static Object ps;
-	public static String ver = "2.4";
+	public static String ver = "2.5";
 	public static Locale locale = new Locale(Locale.getDefault().getLanguage());
 	public static boolean debug = false; //includes the local copy of the FAQ
 	public static Scene scene;
-	Vars v = new Vars();
+	public static Thread threadstartprogram;
 	
 	@Override
 	public void start(Stage primaryStage) {

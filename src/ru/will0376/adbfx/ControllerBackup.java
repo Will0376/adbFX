@@ -28,11 +28,11 @@ public class ControllerBackup implements Initializable {
     @FXML TextField inputname;
 
     String ver = "1.0";
-    File backupFolder = new File(Vars.c.getPath()+"/backups");
+    File backupFolder = new File(Controller.getController().getPath()+"/backups");
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Vars.c.printText("Backup module started! Version: "+ver);
-        Vars.c.printRes(false,"warring.save/restoreApk");
+        Controller.getController().printText("Backup module started! Version: "+ver);
+        Controller.getController().printRes(false,"warring.save/restoreApk");
         this.resources = resources;
         checkFolder();
         fillapplist();
@@ -57,7 +57,7 @@ public class ControllerBackup implements Initializable {
         }
         catch (NullPointerException e){
             System.out.println("Error loading backup folder!");
-            Vars.c.printText("Error loading backup folder!");
+            Controller.getController().printText("Error loading backup folder!");
             e.printStackTrace();
         }
         listbackup.setItems(FXCollections.observableArrayList(paths));
@@ -66,10 +66,10 @@ public class ControllerBackup implements Initializable {
     private void fillapplist() {
         //adb shell "pm list packages"|cut -f 2 -d ":"
         listapp.setItems(FXCollections.observableArrayList(""));
-        Vars.c.startProgram(false,"shell","\"pm list packages\"|cut -f 2 -d \":\"");
-        while(Vars.threadstartprogram.isAlive()){ } //wait :D
-        List<String> pkg = new ArrayList<>(); //= Arrays.asList(Vars.c.oldlog.split("\\s"));
-        for(String pkgs : Vars.c.oldlog.split("\\s"))
+        Controller.getController().startProgram(false,"shell","\"pm list packages\"|cut -f 2 -d \":\"");
+        while(Main.threadstartprogram.isAlive()){ } //wait :D
+        List<String> pkg = new ArrayList<>(); //= Arrays.asList(Controller.getController().oldlog.split("\\s"));
+        for(String pkgs : Controller.getController().oldlog.split("\\s"))
         {
             if(!pkgs.equals("") && !pkgs.equals(" "))
                 pkg.add(pkgs);
@@ -88,9 +88,9 @@ public class ControllerBackup implements Initializable {
         File tmp = new File(listbackup.getSelectionModel().getSelectedItem());
             try {
                 Files.delete(tmp.toPath());
-                Vars.c.printRes(false,"warring.success");
+                Controller.getController().printRes(false,"warring.success");
             } catch (IOException e) {
-                Vars.c.printRes(false,"warring.error");
+                Controller.getController().printRes(false,"warring.error");
                 e.printStackTrace();
             }
         fillbackuplist();
@@ -99,13 +99,13 @@ public class ControllerBackup implements Initializable {
 
     public void restore(){
         if(alert("Restore",resources.getString("warring.restore"))){
-            Vars.c.startProgram("restore",listbackup.getSelectionModel().getSelectedItem());
+            Controller.getController().startProgram("restore",listbackup.getSelectionModel().getSelectedItem());
         }
     }
 
     public void save(){
-        Vars.c.printRes(false,"warring.wait0.5");
-        Vars.c.printRes(false,"warring.wait");
+        Controller.getController().printRes(false,"warring.wait0.5");
+        Controller.getController().printRes(false,"warring.wait");
         String filenamefromtime = new SimpleDateFormat("dd.MM.yyyy_hh_mm").format(new Date());
         if(!inputname.getText().equals("")){
             filenamefromtime = inputname.getText();
@@ -125,12 +125,12 @@ public class ControllerBackup implements Initializable {
     }
 
     private void thread(String[] tam){
-        Vars.c.printRes(false,"warring.threadbackup");
+        Controller.getController().printRes(false,"warring.threadbackup");
         Platform.runLater(() -> {
-            Vars.c.startProgram(tam);
-            while (Vars.threadstartprogram.isAlive()) { }
+            Controller.getController().startProgram(tam);
+            while (Main.threadstartprogram.isAlive()) { }
             reloadbackup();
-            Vars.c.printRes(false,"backup.Done");
+            Controller.getController().printRes(false,"backup.Done");
 
         });
     }
@@ -171,6 +171,6 @@ public class ControllerBackup implements Initializable {
         }
     }
     public void openFolder() {
-        Vars.c.openFolder(backupFolder);
+        Controller.getController().openFolder(backupFolder);
     }
 }
